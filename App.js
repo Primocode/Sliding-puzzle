@@ -1,3 +1,30 @@
+settings = {
+    easy: 9,
+    hard: 16
+}
+
+const generatingElements = (level) => {
+    const spaceForAPuzzle = document.querySelector('#puzzle-container');
+
+    for (let i = 0; i < level; i++) {
+        const mainElement = document.createElement('div');
+        mainElement.className = "puzzle-piece-container";
+        mainElement.id = "space-for-a-puzzle";
+        mainElement.dataset.id = i + 1;
+        spaceForAPuzzle.appendChild(mainElement);
+    } 
+    const mainElement = document.querySelectorAll('#space-for-a-puzzle') 
+
+    for (let i = 0; i < mainElement.length - 1; i++) {
+        const element = document.createElement('div');
+        element.className = "puzzle-piece";
+        element.id = "puzzle-piece";
+        mainElement[i].appendChild(element);
+    }
+
+}
+generatingElements(settings.easy);
+
 const whichItemIsFree = () => {
     const blankItem = document.querySelectorAll('#space-for-a-puzzle');
     const allId = [];
@@ -30,8 +57,12 @@ const drawNumbers = () => {
             }
         }
     }
-}
 
+    puzzle.forEach((item, i) => {
+        item.textContent = values[i];
+        item.dataset.value = values[i];
+    })
+}
 drawNumbers();
 
 
