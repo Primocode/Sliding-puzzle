@@ -191,9 +191,41 @@ body {
                 }
             }
         }
+        .pause-game {
+            display: none;
+        }
+        .pause-game-active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 600px;
+            height: 600px;
+            // filter: blur(3px);
+            background-color: #00000085;
+            position: absolute;
+            .pause-game-active-btn {
+                cursor: pointer;
+                svg {
+                    path {
+                        transition-duration: 0.2s;
+                    }
+                }
+            }
+            .pause-game-active-btn:hover {
+                svg {
+                    path {
+                        fill: rgb(160, 160, 160);
+                    }
+                }
+            }
+        }
     }
 }
 
 .message {
 
+}
+
+.puzzle-piece {
+    cursor: pointer;
 }

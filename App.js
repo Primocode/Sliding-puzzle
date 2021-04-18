@@ -6,7 +6,7 @@ const settings = {
 const values = {
     numberOfChanges: 0,
     selectedMode: null,
-    // selectedMode: "easy",
+    seconds: 0,
 }
 
 const combinations = {
@@ -59,6 +59,10 @@ const possibilityOfSliding = () => {
 const generatingElements = (level) => {
     const spaceForAPuzzle = document.querySelector('#puzzle-container');
 
+    document.querySelectorAll('#space-for-a-puzzle').forEach(item => {
+        item.remove();
+    })
+
     for (let i = 0; i < level; i++) {
         const mainElement = document.createElement('div');
         mainElement.className = "puzzle-piece-container";
@@ -78,7 +82,6 @@ const generatingElements = (level) => {
     drawNumbers();
     possibilityOfSliding();
 }
-
 
 const toTheFreeElement = (value, inWhatElement) => {
     const allComponents = document.querySelectorAll('#space-for-a-puzzle')
@@ -148,11 +151,38 @@ const modeSelection = (e) => {
         item.classList.remove('mode-selection-active')
     })
     e.currentTarget.classList.add('mode-selection-active')
-    // console.log(e.target.dataset.mode)
     values.selectedMode = e.target.dataset.mode
 }
 
 document.querySelectorAll('.mode-selection').forEach(item => item.addEventListener('click', modeSelection))
+
+let counting;
+const countingTime = (perform) => {
+    if (perform === "cout") {
+        console.log("odliczaj czas")
+        counting = setInterval(countingDown, 1000);
+        
+    }
+    if (perform === "stop") {
+        console.log("przestań odliczać czas");
+        window.clearInterval(counting);
+    }
+    if(perform === "reset") {
+        console.log("reset")
+        window.clearInterval(counting);
+        values.seconds = -1;
+        countingDown(true);
+    }
+}
+
+const countingDown = (reset) => {
+    const counter = document.querySelector('#time');
+    values.seconds = ++values.seconds
+    counter.textContent = values.seconds + "s"
+    if (reset) {
+        counter.textContent = "0s";
+    }
+}
 
 const startTheGame = () => {
     if (values.selectedMode == null) {
@@ -161,22 +191,34 @@ const startTheGame = () => {
     else {
         document.querySelector('#puzzle-container').classList.remove('puzzle-9')
         document.querySelector('#puzzle-container').classList.remove('puzzle-16')
-
         document.querySelector('#puzzle-container').classList.add(combinations[values.selectedMode]["spaceForItems"])
-        // console.log(combinations[selectedMode])
-        // console.log(values.selectedMode)
         generatingElements(settings[values.selectedMode]);
+        countingTime("cout");
         document.querySelector('#game-menu').classList.remove('active-game-menu')
     }
 
 }
-// startTheGame()
-
-
 
 document.querySelector('#start-the-game').addEventListener('click', startTheGame)
 
-window.onload = () => {
-    possibilityOfSliding();
+
+const pauseOn = () => {
+    document.querySelector('#pause-game').classList.add('pause-game-active');
+    countingTime("stop");
 }
+document.querySelector('#pauza').addEventListener('click', pauseOn)
+
+const pauseOff = () => {
+    document.querySelector('#pause-game').classList.remove('pause-game-active');
+    countingTime("cout");
+}
+document.querySelector('#pause-game-off').addEventListener('click', pauseOff)
+
+const resetGame = () => {
+    countingTime("reset");
+    countingTime("cout");
+    generatingElements(settings[values.selectedMode]);
     
+}
+
+document.querySelector('#start').addEventListener('click', resetGame)

@@ -277,4 +277,41 @@ body {
   margin: 0px 10px;
   background-repeat: round;
 }
+
+.puzzle-container-content .pause-game {
+  display: none;
+}
+
+.puzzle-container-content .pause-game-active {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 600px;
+  height: 600px;
+  background-color: #00000085;
+  position: absolute;
+}
+
+.puzzle-container-content .pause-game-active .pause-game-active-btn {
+  cursor: pointer;
+}
+
+.puzzle-container-content .pause-game-active .pause-game-active-btn svg path {
+  -webkit-transition-duration: 0.2s;
+          transition-duration: 0.2s;
+}
+
+.puzzle-container-content .pause-game-active .pause-game-active-btn:hover svg path {
+  fill: #a0a0a0;
+}
+
+.puzzle-piece {
+  cursor: pointer;
+}
 /*# sourceMappingURL=style.css.map */
