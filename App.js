@@ -69,21 +69,13 @@ const generatingElements = (level) => {
 generatingElements(settings.easy);
 
 const toTheFreeElement = (value, inWhatElement) => {
-    const blankItem = document.querySelectorAll('#space-for-a-puzzle');
-    const allId = [];
-    const busyId = [];
-    blankItem.forEach(item => { allId.push(Number(item.dataset.id)); })
-    blankItem.forEach(item => {
-        if (item.children["puzzle-piece"]) {
-            busyId.push(Number(item.dataset.id))
+    const allComponents = document.querySelectorAll('#space-for-a-puzzle')
+    allComponents.forEach(element => {
+        if (!document.querySelector(`#puzzle-piece[data-in-which-element="${element.dataset.id}"]`)) {
+            possibilityOfShifint(element.dataset.id, value, inWhatElement);
         }
     })
-    allId.forEach(item => {
-        if(!busyId.includes(item)) {
-            possibilityOfShifint(item, value, inWhatElement);
-            // iluminationOfElements(item)
-        }
-    })
+
 }
 
 const drawNumbers = () => {
@@ -120,7 +112,6 @@ const generatingASingleElement = (id, value) => {
 
     possibilityOfSliding();
     validation();
-    // iluminationOfElements();
 }
 
 const movingElements = (e) => {
