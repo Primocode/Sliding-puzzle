@@ -94,6 +94,7 @@ body {
   background-size: contain;
   background-color: rgba(61, 46, 60, 0.89);
   padding: 10px;
+  position: relative;
 }
 
 .puzzle-container-content .puzzle-9 {
@@ -102,6 +103,7 @@ body {
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+  position: absolute;
 }
 
 .puzzle-container-content .puzzle-9 .puzzle-piece-container {
@@ -136,5 +138,100 @@ body {
 
 .puzzle-container-content .puzzle-9 .puzzle-piece-container .puzzle-piece-correct {
   color: green;
+}
+
+.puzzle-container-content .active-game-menu {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+}
+
+.puzzle-container-content .puzzle-blur {
+  width: 600px;
+  height: 600px;
+  background-color: rgba(0, 0, 0, 0.349);
+  position: absolute;
+  display: none;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.puzzle-container-content .puzzle-blur-mode {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.puzzle-container-content .puzzle-blur-mode span {
+  margin-bottom: 15px;
+  color: white;
+  font-size: 25px;
+}
+
+.puzzle-container-content .puzzle-blur-mode-container-for-btns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.puzzle-container-content .puzzle-blur-mode-container-for-btns button {
+  background: url("img/btn.png");
+  border: none;
+  color: white;
+  font-size: 18px;
+  width: 95px;
+  height: 29px;
+  cursor: pointer;
+  border-radius: 50px;
+  margin: 0px 10px;
+}
+
+.puzzle-container-content .puzzle-blur-mode-container-for-btns .mode-selection-active {
+  -webkit-filter: brightness(70%);
+          filter: brightness(70%);
+}
+
+.puzzle-container-content .puzzle-blur-start {
+  margin-top: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.puzzle-container-content .puzzle-blur-start button {
+  background: url("img/btn.png");
+  border: none;
+  color: white;
+  font-size: 18px;
+  width: 135px;
+  height: 33px;
+  cursor: pointer;
+  border-radius: 50px;
+  margin: 0px 10px;
+  background-repeat: round;
 }
 /*# sourceMappingURL=style.css.map */

@@ -16,21 +16,37 @@
         <div class="puzzle-container-place-for-info">
             <div class="puzzle-container-place-for-info-content">
                 <div class="puzzle-container-place-for-info-content-first">
-                    <span>Ilość przesunięć : <span id="number-of-shifts">0</span></span>
+                    <span>Ilość ruchów : <span id="number-of-shifts">0</span></span>
                     <span>czas : <span id="time">0</span></span>
                 </div>
                 <div class="puzzle-container-place-for-info-content-second">
                     <button class="pauza" id="pauza">Pauza</button>
-                    <button class="Start" id="start">Start</button>
+                    <button class="Start" id="start">Reset</button>
                 </div>
             </div>
         </div>
         <div class="puzzle-container-content">
-            <div class="puzzle-container-content-container puzzle-9" id="puzzle-container">
+            <div class="puzzle-container-content-container puzzle-9 starting-the-game" id="puzzle-container">
+            </div>
+            <div class="puzzle-blur active-game-menu" id="game-menu">
+                <div class="puzzle-blur-mode">
+                    <span>Wybierz plansze</span>
+                    <div class="puzzle-blur-mode-container-for-btns">
+                        <button class="mode-selection" data-mode="easy">3x3</button>
+                        <button class="mode-selection" data-mode="hard">4x4</button>
+                    </div>
+
+                </div>
+                <div class="puzzle-blur-start">
+                    <button id="start-the-game">Rozpocznij</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <div class="message">
+        <p id="message-text"></p>
+    </div>
 
     <script src="App.js"></script>
 </body>
