@@ -20,17 +20,26 @@ const combinations = {
         3: [2,6],
         2: [1,3,5],
         1: [2,4],
+        "spaceForItems": "puzzle-9",
     },
     "hard": {
-        9: [],
-        8: [],
-        7: [],
-        6: [],
-        5: [],
-        4: [],
-        3: [],
-        2: [],
-        1: [],
+        16: [12,15],
+        15: [14,11,16],
+        14: [13,10,15],
+        13: [9,14],
+        12: [16,11,8],
+        11: [7,10,12,15],
+        10: [6,9,11,14],
+        9: [5,10,13],
+        8: [4,7,12],
+        7: [3,6,11,8],
+        6: [2,5,10,7],
+        5: [1,6,9],
+        4: [3,8],
+        3: [7,4,2],
+        2: [1,6,3],
+        1: [2,5],
+        "spaceForItems": "puzzle-16",
     }
 }
 
@@ -67,6 +76,7 @@ const generatingElements = (level) => {
         mainElement[i].appendChild(element);
     }
     drawNumbers();
+    possibilityOfSliding();
 }
 
 
@@ -120,7 +130,9 @@ const movingElements = (e) => {
 }
 
 const possibilityOfShifint = (freeSpace, whichElement, inWhatElement) => {
-    if (combinations.easy[freeSpace].includes(Number(inWhatElement))) {
+    const actualMode = values.selectedMode;
+    console.log(actualMode);
+    if (combinations[actualMode][freeSpace].includes(Number(inWhatElement))) {
         document.querySelector(`[data-in-which-element="${inWhatElement}"`).remove();
         generatingASingleElement(freeSpace, whichElement);
         nextMove();
@@ -136,6 +148,7 @@ const modeSelection = (e) => {
         item.classList.remove('mode-selection-active')
     })
     e.currentTarget.classList.add('mode-selection-active')
+    // console.log(e.target.dataset.mode)
     values.selectedMode = e.target.dataset.mode
 }
 
@@ -146,11 +159,20 @@ const startTheGame = () => {
         console.log("wybierz tryb")
     } 
     else {
+        document.querySelector('#puzzle-container').classList.remove('puzzle-9')
+        document.querySelector('#puzzle-container').classList.remove('puzzle-16')
+
+        document.querySelector('#puzzle-container').classList.add(combinations[values.selectedMode]["spaceForItems"])
+        // console.log(combinations[selectedMode])
+        // console.log(values.selectedMode)
         generatingElements(settings[values.selectedMode]);
         document.querySelector('#game-menu').classList.remove('active-game-menu')
     }
 
 }
+// startTheGame()
+
+
 
 document.querySelector('#start-the-game').addEventListener('click', startTheGame)
 

@@ -95,6 +95,36 @@ body {
                 }
             }
         }
+        .puzzle-16 {
+            display: flex;
+            flex-wrap: wrap;
+            position: absolute;
+            .puzzle-piece-container {
+                height: 150px;
+                width: 150px;
+                // background-color: #fafafa;
+                // border: 1px solid rgb(255, 255, 255);
+                box-sizing: border-box;
+                .puzzle-piece {
+                    box-sizing: border-box;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(61, 46, 60, 0.95);
+                    border: 5px solid #DCA352;
+                    border-radius: 5px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 90px;
+                    box-shadow: 0px 0px 5px 0px #00000080 inset;
+                    color: #DCA352F5;
+
+                }
+                .puzzle-piece-correct {
+                    color: green;
+                }
+            }
+        }
         .starting-the-game {
             // filter: blur(4px);
         }
