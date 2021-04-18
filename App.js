@@ -32,11 +32,18 @@ const combinations = {
     }
 }
 
+const validation = () => {
+    const inTheElement = document.querySelectorAll('#puzzle-piece');
+    inTheElement.forEach(item => {
+        if (item.dataset.value === item.dataset.inWhichElement) {
+            item.classList.add("puzzle-piece-correct");
+        }
+    })
+}
 
 const possibilityOfSliding = () => {
     const singlePuzzle = document.querySelectorAll('#puzzle-piece').forEach(item => item.addEventListener('click', movingElements));
 }
-
 
 const generatingElements = (level) => {
     const spaceForAPuzzle = document.querySelector('#puzzle-container');
@@ -57,7 +64,7 @@ const generatingElements = (level) => {
         element.dataset.inWhichElement = mainElement[i].dataset.id
         mainElement[i].appendChild(element);
     }
-
+    
 }
 generatingElements(settings.easy);
 
@@ -73,43 +80,31 @@ const toTheFreeElement = (value, inWhatElement) => {
     })
     allId.forEach(item => {
         if(!busyId.includes(item)) {
-            console.log("wolne id " + item)
             possibilityOfShifint(item, value, inWhatElement);
-            
-            
+            // iluminationOfElements(item)
         }
     })
-
-    // console.log(allId)
-    // console.log(busyId)
-
-
-    // first.forEach(item => {
-    //     if (!second.includes(item)) {
-    //         console.log("wolna liczba to " + item);}
-    // })
 }
-// toTheFreeElement();
 
 const drawNumbers = () => {
     const puzzle = document.querySelectorAll('#puzzle-piece');
     const values = [];
     for (let i = 1; i <= puzzle.length; i++ ) {
         drawn = 0;
-        a = true;
-        while (a) {
+        grow = true;
+        while (grow) {
             drawn = Number((Math.random() * (puzzle.length - 1) + 1).toFixed(0));
             if (!values.includes(drawn)) {
                 values.push(drawn);
-                a = false;
+                grow = false;
             }
         }
     }
-
     puzzle.forEach((item, i) => {
         item.textContent = values[i];
         item.dataset.value = values[i];
     })
+    validation();
 }
 drawNumbers();
 
@@ -124,6 +119,8 @@ const generatingASingleElement = (id, value) => {
     toTheItem.appendChild(element);
 
     possibilityOfSliding();
+    validation();
+    // iluminationOfElements();
 }
 
 const movingElements = (e) => {
@@ -135,5 +132,6 @@ const possibilityOfShifint = (freeSpace, whichElement, inWhatElement) => {
     if (combinations.easy[freeSpace].includes(Number(inWhatElement))) {
         document.querySelector(`[data-in-which-element="${inWhatElement}"`).remove();
         generatingASingleElement(freeSpace, whichElement);
+        values.numberOfChanges = values.numberOfChanges + 1;
     }
 }

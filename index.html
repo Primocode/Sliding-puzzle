@@ -6,39 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="puzzle-container">
+        <div class="puzzle-container-place-for-info">
+            <div class="puzzle-container-place-for-info-content">
+                <div class="puzzle-container-place-for-info-content-first">
+                    <span>Ilość przesunięć : <span id="number-of-shifts">0</span></span>
+                    <span>czas : <span id="time">0</span></span>
+                </div>
+                <div class="puzzle-container-place-for-info-content-second">
+                    <button class="pauza" id="pauza">Pauza</button>
+                    <button class="Start" id="start">Start</button>
+                </div>
+            </div>
+        </div>
         <div class="puzzle-container-content">
-            <div class="puzzle-container-content-container" id="puzzle-container">
-                <!-- <div class="puzzle-piece-container" id="space-for-a-puzzle" data-id="1">
-                    <div class="puzzle-piece" id="puzzle-piece"></div>
-                </div>
-                <div class="puzzle-piece-container" id="space-for-a-puzzle" data-id="2">
-                    <div class="puzzle-piece" id="puzzle-piece"></div>
-                </div>
-                <div class="puzzle-piece-container" id="space-for-a-puzzle" data-id="3">
-                    <div class="puzzle-piece" id="puzzle-piece"></div>
-                </div>
-                <div class="puzzle-piece-container" id="space-for-a-puzzle" data-id="4">
-                    <div class="puzzle-piece" id="puzzle-piece"></div>
-                </div>
-                <div class="puzzle-piece-container" id="space-for-a-puzzle" data-id="5">
-                    <div class="puzzle-piece" id="puzzle-piece"></div>
-                </div>
-                <div class="puzzle-piece-container" id="space-for-a-puzzle" data-id="6">
-                    <div class="puzzle-piece" id="puzzle-piece"></div>
-                </div>
-                <div class="puzzle-piece-container" id="space-for-a-puzzle" data-id="7">
-                    <div class="puzzle-piece" id="puzzle-piece"></div>
-                </div>
-                <div class="puzzle-piece-container" id="space-for-a-puzzle" data-id="8">
-                    <div class="puzzle-piece" id="puzzle-piece"></div>
-                </div>
-                <div class="puzzle-piece-container" id="space-for-a-puzzle" data-id="9">
-                    
-                </div> -->
+            <div class="puzzle-container-content-container puzzle-9" id="puzzle-container">
             </div>
         </div>
     </div>

@@ -1,11 +1,13 @@
 body {
   margin: 0;
   padding: 0;
+  background: url("img/main-background.png");
 }
 
 * {
   margin: 0;
   padding: 0;
+  font-family: 'Sawarabi Mincho', sans-serif;
 }
 
 .puzzle-container {
@@ -14,21 +16,86 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
 }
 
-.puzzle-container-content {
-  background-color: gray;
-  width: 750px;
-  height: 750px;
+.puzzle-container-place-for-info {
+  margin: 30px 0px;
 }
 
-.puzzle-container-content-container {
+.puzzle-container-place-for-info-content {
+  background: url("img/bakground-date.png");
+  width: 626px;
+  height: 104px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.puzzle-container-place-for-info-content-first {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  margin-left: 30px;
+}
+
+.puzzle-container-place-for-info-content-first span {
+  color: white;
+  font-size: 19px;
+}
+
+.puzzle-container-place-for-info-content-second {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-right: 30px;
+}
+
+.puzzle-container-place-for-info-content-second button {
+  background: url("img/btn.png");
+  border: none;
+  color: white;
+  font-size: 18px;
+  width: 95px;
+  height: 29px;
+  cursor: pointer;
+}
+
+.puzzle-container-content {
+  background: url("img/main-field-bg.png");
+  width: 600px;
+  height: 600px;
+  background-size: contain;
+  background-color: rgba(61, 46, 60, 0.89);
+  padding: 10px;
+}
+
+.puzzle-container-content .puzzle-9 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -36,19 +103,21 @@ body {
       flex-wrap: wrap;
 }
 
-.puzzle-container-content-container .puzzle-piece-container {
-  height: 250px;
-  width: 250px;
-  background-color: #fafafa;
-  border: 1px solid white;
+.puzzle-container-content .puzzle-9 .puzzle-piece-container {
+  height: 200px;
+  width: 200px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
 
-.puzzle-container-content-container .puzzle-piece-container .puzzle-piece {
+.puzzle-container-content .puzzle-9 .puzzle-piece-container .puzzle-piece {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   width: 100%;
   height: 100%;
-  background: #9292ff;
+  background: rgba(61, 46, 60, 0.95);
+  border: 5px solid #DCA352;
+  border-radius: 5px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -58,7 +127,13 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  font-size: 40px;
-  color: white;
+  font-size: 90px;
+  -webkit-box-shadow: 0px 0px 5px 0px #00000080 inset;
+          box-shadow: 0px 0px 5px 0px #00000080 inset;
+  color: #DCA352F5;
+}
+
+.puzzle-container-content .puzzle-9 .puzzle-piece-container .puzzle-piece-correct {
+  color: green;
 }
 /*# sourceMappingURL=style.css.map */
