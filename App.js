@@ -222,7 +222,7 @@ const availablePuzzleForClick = (col, idEmpty) => {
     let r = 1;
     for (let i = 0; i < (col -2); i++) {
         puzzleRight.push(r += col);
-        puzzleLeft.push(col + col);
+        puzzleLeft.push(col += col);
         
     }
 
@@ -250,31 +250,31 @@ const availablePuzzleForClick = (col, idEmpty) => {
         // }
     }
 
-    if ((idEmpty > 1 && idEmpty < col) || (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity)) {
-        capabilities.push(idEmpty + 1);
+    // if ((idEmpty > 1 && idEmpty < col) || (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity)) {
+    //     capabilities.push(idEmpty + 1);
 
-        capabilities.push(idEmpty - 1);
+    //     capabilities.push(idEmpty - 1);
 
-        if (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity) capabilities.push(idEmpty - col);
+    //     if (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity) capabilities.push(idEmpty - col);
         
-        if (idEmpty > 1 && idEmpty < col) capabilities.push(idEmpty + col);
-    }
+    //     if (idEmpty > 1 && idEmpty < col) capabilities.push(idEmpty + col);
+    // }
 
-    if ((idEmpty === 1) || (idEmpty === col)) {
-        capabilities.push(idEmpty + col);
+    // if ((idEmpty === 1) || (idEmpty === col)) {
+    //     capabilities.push(idEmpty + col);
 
-        if (idEmpty === 1) capabilities.push(idEmpty + 1 );
+    //     if (idEmpty === 1) capabilities.push(idEmpty + 1 );
 
-        if (idEmpty === col) capabilities.push(idEmpty - 1 );
-    }
+    //     if (idEmpty === col) capabilities.push(idEmpty - 1 );
+    // }
 
-    if ((idEmpty === (puzzleQuantity - (col - 1 ))) || (puzzleQuantity === idEmpty)) {
-        capabilities.push(idEmpty - col);
+    // if ((idEmpty === (puzzleQuantity - (col - 1 ))) || (puzzleQuantity === idEmpty)) {
+    //     capabilities.push(idEmpty - col);
 
-        if (idEmpty === (puzzleQuantity - (col - 1 ))) capabilities.push(idEmpty + 1 );  
+    //     if (idEmpty === (puzzleQuantity - (col - 1 ))) capabilities.push(idEmpty + 1 );  
         
-        if (puzzleQuantity === idEmpty) capabilities.push(idEmpty - 1);
-    }
+    //     if (puzzleQuantity === idEmpty) capabilities.push(idEmpty - 1);
+    // }
     console.log(capabilities)
 }
 
