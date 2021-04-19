@@ -97,7 +97,7 @@ body {
   position: relative;
 }
 
-.puzzle-container-content .puzzle-9 {
+.puzzle-container-content .puzzle-3 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -106,14 +106,14 @@ body {
   position: absolute;
 }
 
-.puzzle-container-content .puzzle-9 .puzzle-piece-container {
+.puzzle-container-content .puzzle-3 .puzzle-piece-container {
   height: 200px;
   width: 200px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
 
-.puzzle-container-content .puzzle-9 .puzzle-piece-container .puzzle-piece {
+.puzzle-container-content .puzzle-3 .puzzle-piece-container .puzzle-piece {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   width: 100%;
@@ -136,11 +136,11 @@ body {
   color: #DCA352F5;
 }
 
-.puzzle-container-content .puzzle-9 .puzzle-piece-container .puzzle-piece-correct {
+.puzzle-container-content .puzzle-3 .puzzle-piece-container .puzzle-piece-correct {
   color: green;
 }
 
-.puzzle-container-content .puzzle-16 {
+.puzzle-container-content .puzzle-4 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -149,14 +149,14 @@ body {
   position: absolute;
 }
 
-.puzzle-container-content .puzzle-16 .puzzle-piece-container {
+.puzzle-container-content .puzzle-4 .puzzle-piece-container {
   height: 150px;
   width: 150px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
 
-.puzzle-container-content .puzzle-16 .puzzle-piece-container .puzzle-piece {
+.puzzle-container-content .puzzle-4 .puzzle-piece-container .puzzle-piece {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   width: 100%;
@@ -179,7 +179,7 @@ body {
   color: #DCA352F5;
 }
 
-.puzzle-container-content .puzzle-16 .puzzle-piece-container .puzzle-piece-correct {
+.puzzle-container-content .puzzle-4 .puzzle-piece-container .puzzle-piece-correct {
   color: green;
 }
 

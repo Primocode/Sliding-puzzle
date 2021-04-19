@@ -10,42 +10,43 @@ const values = {
     selectedMode: null,
     seconds: 0,
     pause: false,
-    menu: true
+    menu: true,
+    col: null,
 }
 
-const combinations = {
-    "col3": {
-        9: [8,6],
-        8: [7,9,5],
-        7: [8,4],
-        6: [3,5,9],
-        5: [2,4,6,8],
-        4: [1,5,7],
-        3: [2,6],
-        2: [1,3,5],
-        1: [2,4],
-        "spaceForItems": "puzzle-9",
-    },
-    "col4": {
-        16: [12,15],
-        15: [14,11,16],
-        14: [13,10,15],
-        13: [9,14],
-        12: [16,11,8],
-        11: [7,10,12,15],
-        10: [6,9,11,14],
-        9: [5,10,13],
-        8: [4,7,12],
-        7: [3,6,11,8],
-        6: [2,5,10,7],
-        5: [1,6,9],
-        4: [3,8],
-        3: [7,4,2],
-        2: [1,6,3],
-        1: [2,5],
-        "spaceForItems": "puzzle-16",
-    }
-}
+// const combinations = {
+//     "col3": {
+//         9: [8,6],
+//         8: [7,9,5],
+//         7: [8,4],
+//         6: [3,5,9],
+//         5: [2,4,6,8],
+//         4: [1,5,7],
+//         3: [2,6],
+//         2: [1,3,5],
+//         1: [2,4],
+//         "spaceForItems": "puzzle-9",
+//     },
+//     "col4": {
+//         16: [12,15],
+//         15: [14,11,16],
+//         14: [13,10,15],
+//         13: [9,14],
+//         12: [16,11,8],
+//         11: [7,10,12,15],
+//         10: [6,9,11,14],
+//         9: [5,10,13],
+//         8: [4,7,12],
+//         7: [3,6,11,8],
+//         6: [2,5,10,7],
+//         5: [1,6,9],
+//         4: [3,8],
+//         3: [7,4,2],
+//         2: [1,6,3],
+//         1: [2,5],
+//         "spaceForItems": "puzzle-16",
+//     }
+// }
 
 const validation = () => {
     const inTheElement = document.querySelectorAll('#puzzle-piece');
@@ -130,12 +131,21 @@ const movingElements = (e) => checkFreeItem(e.currentTarget.dataset.value, e.tar
 
 
 const possibilityOfShifting = (freeSpace, whichElement, inWhatElement) => {
-    const actualMode = values.selectedMode;
-    console.log(actualMode);
-    if (combinations[actualMode][freeSpace].includes(Number(inWhatElement))) {
+    // const actualMode = values.selectedMode;
+    // console.log(actualMode);
+    // if (combinations[actualMode][freeSpace].includes(Number(inWhatElement))) {
+    //     document.querySelector(`[data-in-which-element="${inWhatElement}"`).remove();
+    //     generatingASingleElement(freeSpace, whichElement);
+    //     nextMove();
+    // }
+    availablePuzzleForClick(values.col, Number(freeSpace))
+    console.log(inWhatElement)
+    if(capabilities.includes(Number(inWhatElement))) {
         document.querySelector(`[data-in-which-element="${inWhatElement}"`).remove();
         generatingASingleElement(freeSpace, whichElement);
-        nextMove();
+    }
+    else {
+        console.log("nie możesz")
     }
 }
 
@@ -144,7 +154,9 @@ const nextMove = () => document.querySelector('#number-of-shifts').textContent =
 const modeSelection = (e) => {
     document.querySelectorAll('.mode-selection').forEach(item => item.classList.remove('mode-selection-active'))
     e.currentTarget.classList.add('mode-selection-active')
-    values.selectedMode = e.target.dataset.mode
+    // values.selectedMode = e.target.dataset.mode
+
+    values.col = Number(e.target.dataset.col)
 }
 
 document.querySelectorAll('.mode-selection').forEach(item => item.addEventListener('click', modeSelection))
@@ -171,13 +183,11 @@ const countingDown = (reset) => {
 }
 
 const startTheGame = () => {
-    if (values.selectedMode == null) console.log("wybierz tryb")
+    if (values.col == null) console.log("wybierz tryb")
      
     else {
-        document.querySelector('#puzzle-container').classList.remove('puzzle-9')
-        document.querySelector('#puzzle-container').classList.remove('puzzle-16')
-        document.querySelector('#puzzle-container').classList.add(combinations[values.selectedMode]["spaceForItems"])
-        generatingElements(settings[values.selectedMode]);
+        document.querySelector('#puzzle-container').classList.add("puzzle-" + values.col)
+        generatingElements(values.col * values.col);
         countingTime("cout");
         document.querySelector('#game-menu').classList.remove('active-game-menu')
         values.menu = false;
@@ -211,7 +221,7 @@ const resetGame = () => {
     if (values.menu !== true) {
         if (values.pause == false) {
             countingTime("reset");
-            generatingElements(settings[values.selectedMode]);
+            generatingElements(values.col * values.col);
             values.numberOfChanges = 0;
             document.querySelector('#number-of-shifts').textContent = values.numberOfChanges;
         }
@@ -222,12 +232,12 @@ const resetGame = () => {
     else {
         console.log("menu jest włączone")
     }
-
 }
 
 document.querySelector('#start').addEventListener('click', resetGame)
 
 const availablePuzzleForClick = (col, idEmpty) => {
+    console.log(col, idEmpty)
     capabilities = [];
     const puzzleQuantity = col * col
 
@@ -282,6 +292,4 @@ const availablePuzzleForClick = (col, idEmpty) => {
     }
     console.log(capabilities)
 }
-
-
 
