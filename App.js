@@ -3,6 +3,8 @@ const settings = {
     col4: 16 
 }
 
+let capabilities = [];
+
 const values = {
     numberOfChanges: 0,
     selectedMode: null,
@@ -51,9 +53,8 @@ const validation = () => {
     })
 }
 
-const possibilityOfSliding = () => {
-     document.querySelectorAll('#puzzle-piece').forEach(item => item.addEventListener('click', movingElements));
-}
+const givePossibilityToMove = () => document.querySelectorAll('#puzzle-piece').forEach(item => item.addEventListener('click', movingElements));
+
 
 const generatingElements = (level) => {
     const spaceForAPuzzle = document.querySelector('#puzzle-container');
@@ -77,14 +78,14 @@ const generatingElements = (level) => {
         mainElement[i].appendChild(element);
     }
     drawNumbers();
-    possibilityOfSliding();
+    givePossibilityToMove();
 }
 
-const toTheFreeElement = (value, inWhatElement) => {
+const checkFreeItem = (puzzleNumber, inWhichElement) => {
     const allComponents = document.querySelectorAll('#space-for-a-puzzle')
     allComponents.forEach(element => {
         if (!document.querySelector(`#puzzle-piece[data-in-which-element="${element.dataset.id}"]`)) {
-            possibilityOfShifint(element.dataset.id, value, inWhatElement);
+            possibilityOfShifting(element.dataset.id, puzzleNumber, inWhichElement);
         }
     })
 }
@@ -120,14 +121,14 @@ const generatingASingleElement = (id, value) => {
     element.dataset.value = value;
     toTheItem.appendChild(element);
 
-    possibilityOfSliding();
+    givePossibilityToMove();
     validation();
 }
 
-const movingElements = (e) => toTheFreeElement(e.currentTarget.dataset.value, e.target.dataset.inWhichElement);
+const movingElements = (e) => checkFreeItem(e.currentTarget.dataset.value, e.target.dataset.inWhichElement);
 
 
-const possibilityOfShifint = (freeSpace, whichElement, inWhatElement) => {
+const possibilityOfShifting = (freeSpace, whichElement, inWhatElement) => {
     const actualMode = values.selectedMode;
     console.log(actualMode);
     if (combinations[actualMode][freeSpace].includes(Number(inWhatElement))) {
@@ -137,9 +138,7 @@ const possibilityOfShifint = (freeSpace, whichElement, inWhatElement) => {
     }
 }
 
-const nextMove = () => {
-    document.querySelector('#number-of-shifts').textContent = ++values.numberOfChanges;
-}
+const nextMove = () => document.querySelector('#number-of-shifts').textContent = ++values.numberOfChanges;
 
 const modeSelection = (e) => {
     document.querySelectorAll('.mode-selection').forEach(item => item.classList.remove('mode-selection-active'))
@@ -159,6 +158,7 @@ const countingTime = (perform) => {
         window.clearInterval(counting);
         values.seconds = -1;
         countingDown(true);
+        countingTime("cout");
     }
 }
 
@@ -201,7 +201,6 @@ document.querySelector('#pause-game-off').addEventListener('click', pauseOff)
 const resetGame = () => {
     if (values.pause == false) {
         countingTime("reset");
-        countingTime("cout");
         generatingElements(settings[values.selectedMode]);
         values.numberOfChanges = 0;
         document.querySelector('#number-of-shifts').textContent = values.numberOfChanges;
@@ -213,96 +212,73 @@ const resetGame = () => {
 
 document.querySelector('#start').addEventListener('click', resetGame)
 
-const testy = (col, idEmpty) => {
-    const capabilities = [];
-
+const availablePuzzleForClick = (col, idEmpty) => {
+    capabilities = [];
     const puzzleQuantity = col * col
-
-    
 
     const puzzleLeft = [];
     const puzzleRight = [];
-
 
     let r = 1;
     for (let i = 0; i < (col -2); i++) {
         puzzleRight.push(r += col);
         puzzleLeft.push(col + col);
-
+        
     }
 
+    console.log(puzzleRight);
 
-    //lewo
-    if (puzzleRight.includes(idEmpty)) {
-        console.log("liczba podana z lewa")
-        capabilities.push(idEmpty - col)
-        capabilities.push(idEmpty + 1)
-        capabilities.push(idEmpty + col)
-    }
-    //prawo
-    else if (puzzleLeft.includes(idEmpty)) {
-        console.log("podana z prawej")
-        capabilities.push(idEmpty - col)
-        capabilities.push(idEmpty - 1)
-        capabilities.push(idEmpty + col)
-    }
-    //srodek
-    else if (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty ) {
-        console.log("w srodku")
-        capabilities.push(idEmpty + col)
-        capabilities.push(idEmpty - 1)
-        capabilities.push(idEmpty + 1)
-        capabilities.push(idEmpty - col)
-    }
+    console.log(puzzleLeft)
 
-    //dol
-    if (idEmpty > 1 && idEmpty < col) {
-        capabilities.push(idEmpty + 1)
-        capabilities.push(idEmpty - 1)
-        capabilities.push(idEmpty + col)
-        console.log("dół")
-    } 
-
-    // gora
-    if (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity) {
-        console.log("gora")
-        capabilities.push(idEmpty + 1 )
-        capabilities.push(idEmpty - 1 )
-        capabilities.push(idEmpty - col)
-    }
-
-    //lewo gora
-
-    if (idEmpty === 1) {
-        capabilities.push(idEmpty + 1 )
-        capabilities.push(idEmpty + col)
-    }
-
-    //prawo gora 
-    if (idEmpty === col) {
-        capabilities.push(idEmpty - 1 )
-        capabilities.push(idEmpty + col)
-    }
-
-    // lewo dol
-
-    if (idEmpty === (puzzleQuantity - (col - 1 ))) {
-        capabilities.push(idEmpty + 1 );
-        capabilities.push(idEmpty - col)        
-    }
-
-    // dol prawo
-
-    if (puzzleQuantity === idEmpty) {
-        capabilities.push(idEmpty - 1);
+    if ((puzzleRight.includes(idEmpty)) || (puzzleLeft.includes(idEmpty)) || (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty )) {
         capabilities.push(idEmpty - col);
+        capabilities.push(idEmpty + col);
+        console.log("prawo albo lewo")
+        if (puzzleRight.includes(idEmpty)) {
+            capabilities.push(idEmpty + 1);
+            console.log("prawo")
+        }
+        if (puzzleLeft.includes(idEmpty)) {
+            capabilities.push(idEmpty - 1);
+            console.log("lewo")
+        }
+
+        // if (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty && !puzzleLeft.includes(idEmpty) && !puzzleRight.includes(idEmpty)) {
+        //     capabilities.push(idEmpty - 1);
+        //     capabilities.push(idEmpty + 1);
+        //     console.log("śroek")
+        // }
     }
 
-    console.log(capabilities)
+    if ((idEmpty > 1 && idEmpty < col) || (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity)) {
+        capabilities.push(idEmpty + 1);
 
+        capabilities.push(idEmpty - 1);
+
+        if (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity) capabilities.push(idEmpty - col);
+        
+        if (idEmpty > 1 && idEmpty < col) capabilities.push(idEmpty + col);
+    }
+
+    if ((idEmpty === 1) || (idEmpty === col)) {
+        capabilities.push(idEmpty + col);
+
+        if (idEmpty === 1) capabilities.push(idEmpty + 1 );
+
+        if (idEmpty === col) capabilities.push(idEmpty - 1 );
+    }
+
+    if ((idEmpty === (puzzleQuantity - (col - 1 ))) || (puzzleQuantity === idEmpty)) {
+        capabilities.push(idEmpty - col);
+
+        if (idEmpty === (puzzleQuantity - (col - 1 ))) capabilities.push(idEmpty + 1 );  
+        
+        if (puzzleQuantity === idEmpty) capabilities.push(idEmpty - 1);
+    }
+    console.log(capabilities)
 }
 
-testy(6, 13) //7//14//19
+availablePuzzleForClick(6, 19) //7//14//19
 
 
 
