@@ -40,11 +40,12 @@ body {
             }
 
             &-second {
-                display: flex;
-                justify-content: space-evenly;
-                flex-direction: column;
+                // display: flex;
+                // justify-content: space-evenly;
+                // flex-direction: column;
                 margin-right: 30px;
                 button {
+                    margin-top: 15px;
                     background: url('img/btn.png');
                     border: none;
                     color: white;
@@ -53,6 +54,14 @@ body {
                     height: 29px;
                     cursor: pointer;
                     border-radius: 50px;
+                }
+                .choose-again {
+                    width: 190px;
+                    background: url('img/background-big.png');
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    height: 34px;
+                    font-size: 16px;
                 }
             }
         }
@@ -228,4 +237,8 @@ body {
 
 .puzzle-piece {
     cursor: pointer;
+}
+
+.puzzle-active-for-move {
+    background: rgba(68, 56, 67, 0.95) !important;
 }
