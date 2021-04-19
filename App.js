@@ -219,66 +219,68 @@ const availablePuzzleForClick = (col, idEmpty) => {
     const puzzleLeft = [];
     const puzzleRight = [];
 
-    let r = 1;
+    // let r = 1;
+
+    let dataRight = 1;
+    let dataLeft = col;
     for (let i = 0; i < (col -2); i++) {
-        puzzleRight.push(r += col);
-        puzzleLeft.push(col += col);
-        
+        puzzleRight.push(dataRight += col);
+        puzzleLeft.push(dataLeft += (col) );
     }
 
-    console.log(puzzleRight);
+    // console.log(puzzleRight);
 
-    console.log(puzzleLeft)
+    // console.log(puzzleLeft)
 
     if ((puzzleRight.includes(idEmpty)) || (puzzleLeft.includes(idEmpty)) || (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty )) {
         capabilities.push(idEmpty - col);
         capabilities.push(idEmpty + col);
-        console.log("prawo albo lewo")
+        // console.log("prawo albo lewo")
         if (puzzleRight.includes(idEmpty)) {
             capabilities.push(idEmpty + 1);
-            console.log("prawo")
+            // console.log("prawo")
         }
         if (puzzleLeft.includes(idEmpty)) {
             capabilities.push(idEmpty - 1);
-            console.log("lewo")
+            // console.log("lewo")
         }
 
-        // if (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty && !puzzleLeft.includes(idEmpty) && !puzzleRight.includes(idEmpty)) {
-        //     capabilities.push(idEmpty - 1);
-        //     capabilities.push(idEmpty + 1);
-        //     console.log("śroek")
-        // }
+        if (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty && !puzzleLeft.includes(idEmpty) && !puzzleRight.includes(idEmpty)) {
+            capabilities.push(idEmpty - 1);
+            capabilities.push(idEmpty + 1);
+            // console.log("śroek")
+        }
     }
 
-    // if ((idEmpty > 1 && idEmpty < col) || (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity)) {
-    //     capabilities.push(idEmpty + 1);
+    if ((idEmpty > 1 && idEmpty < col) || (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity)) {
+        capabilities.push(idEmpty + 1);
 
-    //     capabilities.push(idEmpty - 1);
+        capabilities.push(idEmpty - 1);
 
-    //     if (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity) capabilities.push(idEmpty - col);
+        if (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity) capabilities.push(idEmpty - col);
         
-    //     if (idEmpty > 1 && idEmpty < col) capabilities.push(idEmpty + col);
-    // }
+        if (idEmpty > 1 && idEmpty < col) capabilities.push(idEmpty + col);
+    }
 
-    // if ((idEmpty === 1) || (idEmpty === col)) {
-    //     capabilities.push(idEmpty + col);
+    if ((idEmpty === 1) || (idEmpty === col)) {
+        capabilities.push(idEmpty + col);
 
-    //     if (idEmpty === 1) capabilities.push(idEmpty + 1 );
+        if (idEmpty === 1) capabilities.push(idEmpty + 1 );
 
-    //     if (idEmpty === col) capabilities.push(idEmpty - 1 );
-    // }
+        if (idEmpty === col) capabilities.push(idEmpty - 1 );
+    }
 
-    // if ((idEmpty === (puzzleQuantity - (col - 1 ))) || (puzzleQuantity === idEmpty)) {
-    //     capabilities.push(idEmpty - col);
+    if ((idEmpty === (puzzleQuantity - (col - 1 ))) || (puzzleQuantity === idEmpty)) {
+        capabilities.push(idEmpty - col);
 
-    //     if (idEmpty === (puzzleQuantity - (col - 1 ))) capabilities.push(idEmpty + 1 );  
+        if (idEmpty === (puzzleQuantity - (col - 1 ))) capabilities.push(idEmpty + 1 );  
         
-    //     if (puzzleQuantity === idEmpty) capabilities.push(idEmpty - 1);
-    // }
+        if (puzzleQuantity === idEmpty) capabilities.push(idEmpty - 1);
+    }
     console.log(capabilities)
 }
 
-availablePuzzleForClick(6, 19) //7//14//19
+// availablePuzzleForClick(6, 24) //7//14//19
 
 
 
