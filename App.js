@@ -1,4 +1,5 @@
 let capabilities = [];
+let puzzlePosition = [];
 
 const values = {
     numberOfChanges: 1,
@@ -41,8 +42,6 @@ const generatingElements = (level) => {
         element.dataset.inWhichElement = mainElement[i].dataset.id
         mainElement[i].appendChild(element);
     }
-    // drawNumbers();
-
     
     givePossibilityToMove();
     puzzleAvaiableForTransfer();
@@ -51,46 +50,12 @@ const generatingElements = (level) => {
     }
 }
 
-const checkFreeItem = (puzzleNumber, inWhichElement) => {
-    const allComponents = document.querySelectorAll('#space-for-a-puzzle')
-    allComponents.forEach(element => {
-        if (!document.querySelector(`#puzzle-piece[data-in-which-element="${element.dataset.id}"]`)) {
-            possibilityOfShifting(element.dataset.id, puzzleNumber, inWhichElement);
-        }
-    })
-}
-
-// const drawNumbers = () => {
-//     const puzzle = document.querySelectorAll('#puzzle-piece');
-//     const values = [];
-//     for (let i = 1; i <= puzzle.length; i++ ) {
-//         drawn = 0;
-//         grow = true;
-//         while (grow) {
-//             drawn = Number((Math.random() * (puzzle.length - 1) + 1).toFixed(0));
-//             if (!values.includes(drawn)) {
-//                 values.push(drawn);
-//                 grow = false;
-//                 puzzle[i - 1].textContent = drawn;
-//                 puzzle[i - 1].dataset.value = drawn
-//             }
-//         }
-//     }
-//     validation();
-// }
-
 const translatingPuzzles = () => {
-    const allComponents = document.querySelectorAll('#space-for-a-puzzle')
-
-    let indexElementDrawn
-    allComponents.forEach(element => {
-        if (!document.querySelector(`#puzzle-piece[data-in-which-element="${element.dataset.id}"]`)) {
-            indexElementDrawn = (Math.random() * (capabilities.length -1)).toFixed(0);
-            console.log(indexElementDrawn)
-            const puzzleToMove = document.querySelector(`#puzzle-piece[data-in-which-element="${capabilities[indexElementDrawn]}"]`)
-            generatingASingleElement(element.dataset.id, puzzleToMove.dataset.value, puzzleToMove.dataset.inWhichElement)
-        }
-    })
+    let indexElementDrawn;
+    indexElementDrawn = (Math.random() * (capabilities.length -1)).toFixed(0);
+    const puzzleToMove = document.querySelector(`#puzzle-piece[data-in-which-element="${capabilities[indexElementDrawn]}"]`)
+    emptyElement();
+    generatingASingleElement(emptyElementId, puzzleToMove.dataset.value, puzzleToMove.dataset.inWhichElement)
 }
 
 const generatingASingleElement = (id, value, inWhatElement) => {
@@ -109,13 +74,12 @@ const generatingASingleElement = (id, value, inWhatElement) => {
     puzzleAvaiableForTransfer();
 }
 
-const movingElements = (e) => checkFreeItem(e.currentTarget.dataset.value, e.target.dataset.inWhichElement);
 
-const possibilityOfShifting = (freeSpace, whichElement, inWhatElement) => {
-    availablePuzzleForClick(values.col, Number(freeSpace))
-    if(capabilities.includes(Number(inWhatElement))) {
-        
-        generatingASingleElement(freeSpace, whichElement, inWhatElement);
+const movingElements = (e) => {
+    emptyElement();
+    availablePuzzleForClick(values.col, Number(emptyElementId))
+    if(capabilities.includes(Number(e.target.dataset.inWhichElement))) {
+        generatingASingleElement(emptyElementId, e.currentTarget.dataset.value, e.target.dataset.inWhichElement);
         nextMove();
     }
     else {
@@ -229,26 +193,20 @@ const backToTheMenu = () => {
 document.querySelector('#choose-again').addEventListener('click', backToTheMenu)
 
 const puzzleAvaiableForTransfer = () => {
-    document.querySelectorAll('#puzzle-piece').forEach(element => {
-        element.classList.remove('puzzle-active-for-move')
-    })
+    document.querySelectorAll('#puzzle-piece').forEach(element => element.classList.remove('puzzle-active-for-move'))
 
-    const allComponents = document.querySelectorAll('#space-for-a-puzzle')
-    allComponents.forEach(element => {
-        if (!document.querySelector(`#puzzle-piece[data-in-which-element="${element.dataset.id}"]`)) {
-            availablePuzzleForClick(values.col, Number(element.dataset.id))
-        }
-    })
+    emptyElement();
+    availablePuzzleForClick(values.col, Number(emptyElementId))
 
     capabilities.forEach(id => {
         document.querySelector(`#puzzle-piece[data-in-which-element="${id}"]`).classList.add('puzzle-active-for-move');
     })
-    
 }
 
 const availablePuzzleForClick = (col, idEmpty) => {
-    console.log(col, idEmpty)
+    // console.log(col, idEmpty)
     capabilities = [];
+    puzzlePosition = [];
     const puzzleQuantity = col * col
 
     const puzzleLeft = [];
@@ -264,41 +222,119 @@ const availablePuzzleForClick = (col, idEmpty) => {
 
     if ((puzzleRight.includes(idEmpty)) || (puzzleLeft.includes(idEmpty)) || (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty )) {
         capabilities.push(idEmpty - col);
+        puzzlePosition.push("top");
         capabilities.push(idEmpty + col);
-        if (puzzleRight.includes(idEmpty)) capabilities.push(idEmpty + 1)
+        puzzlePosition.push("bottom");
+        if (puzzleRight.includes(idEmpty)) {
+            capabilities.push(idEmpty + 1)
+            puzzlePosition.push("right")
+        }
 
-        if (puzzleLeft.includes(idEmpty)) capabilities.push(idEmpty - 1);
+        if (puzzleLeft.includes(idEmpty)) {
+            capabilities.push(idEmpty - 1);
+            puzzlePosition.push("left")
+        }
 
         if (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty && !puzzleLeft.includes(idEmpty) && !puzzleRight.includes(idEmpty)) {
             capabilities.push(idEmpty - 1);
+            puzzlePosition.push("left")
             capabilities.push(idEmpty + 1);
+            puzzlePosition.push("right");
         }
     }
 
     if ((idEmpty > 1 && idEmpty < col) || (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity)) {
         capabilities.push(idEmpty + 1);
+        puzzlePosition.push("right")
 
         capabilities.push(idEmpty - 1);
+        puzzlePosition.push("left")
 
-        if (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity) capabilities.push(idEmpty - col);
+        if (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity) {
+            capabilities.push(idEmpty - col);
+            puzzlePosition.push("top")
+        }
         
-        if (idEmpty > 1 && idEmpty < col) capabilities.push(idEmpty + col);
+        if (idEmpty > 1 && idEmpty < col) {
+            capabilities.push(idEmpty + col)
+            puzzlePosition.push("bottom")   
+        };
     }
 
     if ((idEmpty === 1) || (idEmpty === col)) {
         capabilities.push(idEmpty + col);
+        puzzlePosition.push("bottom")
 
-        if (idEmpty === 1) capabilities.push(idEmpty + 1 );
+        if (idEmpty === 1) {
+            capabilities.push(idEmpty + 1 );
+            puzzlePosition.push("right")
+        }
 
-        if (idEmpty === col) capabilities.push(idEmpty - 1 );
+        if (idEmpty === col) {
+            capabilities.push(idEmpty - 1 );
+            puzzlePosition.push("left")
+        }
     }
 
     if ((idEmpty === (puzzleQuantity - (col - 1 ))) || (puzzleQuantity === idEmpty)) {
         capabilities.push(idEmpty - col);
-
-        if (idEmpty === (puzzleQuantity - (col - 1 ))) capabilities.push(idEmpty + 1 );  
+        puzzlePosition.push("top")
+        if (idEmpty === (puzzleQuantity - (col - 1 ))) {
+            capabilities.push(idEmpty + 1 );  
+            puzzlePosition.push("right")
+        }
         
-        if (puzzleQuantity === idEmpty) capabilities.push(idEmpty - 1);
+        if (puzzleQuantity === idEmpty) {
+            capabilities.push(idEmpty - 1);
+            puzzlePosition.push("left")
+        }
     }
+}
+
+window.addEventListener('keydown', (e) => {
+    switch (e.keyCode) {
+      case 37: // Left
+        console.log("lewo")
+        arrowControl("left")
+      break;
+   
+      case 38: // Up
+        console.log("góra")
+        arrowControl("top")
+      break;
+   
+      case 39: // Right
+        console.log("prawo")
+        arrowControl("right")
+      break;
+   
+      case 40: // Down
+        console.log("dół")
+        arrowControl("bottom")
+      break;
+    }
+  }, false);
+
+const arrowControl = (position) => {
+    // console.log(position)
+    // if (puzzlePosition.includes(position)) {
+    //     console.log("jest")
+    //     const indexElement = puzzlePosition.indexOf(position)
+    //     console.log(capabilities[indexElement])
+    //     generatingASingleElement(index, )
+    // }
+    // else {
+    //     console.log("nie ma ")
+    // }
+}
+
+let emptyElementId;
+const emptyElement = () => {
+    const allComponents = document.querySelectorAll('#space-for-a-puzzle')
+    allComponents.forEach(element => {
+        if (!document.querySelector(`#puzzle-piece[data-in-which-element="${element.dataset.id}"]`)) {
+            emptyElementId = element.dataset.id;
+        }
+    })
 }
 
