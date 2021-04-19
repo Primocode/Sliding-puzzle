@@ -311,11 +311,8 @@ body {
   fill: #a0a0a0;
 }
 
-.puzzle-piece {
-  cursor: pointer;
-}
-
 .puzzle-active-for-move {
   background: rgba(68, 56, 67, 0.95) !important;
+  cursor: pointer;
 }
 /*# sourceMappingURL=style.css.map */

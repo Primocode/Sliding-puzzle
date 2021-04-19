@@ -148,12 +148,9 @@ const startTheGame = () => {
 document.querySelector('#start-the-game').addEventListener('click', startTheGame)
 
 const menu = (switchMenu) => {
-    if (switchMenu) {
-        document.querySelector('#game-menu').classList.add('active-game-menu')
-    }
-    else {
-        document.querySelector('#game-menu').classList.remove('active-game-menu')
-    }
+    if (switchMenu) document.querySelector('#game-menu').classList.add('active-game-menu')
+    
+    else document.querySelector('#game-menu').classList.remove('active-game-menu')
 }
 
 const pauseOn = () => {
