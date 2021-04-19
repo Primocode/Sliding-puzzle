@@ -9,7 +9,8 @@ const values = {
     numberOfChanges: 0,
     selectedMode: null,
     seconds: 0,
-    pause: false
+    pause: false,
+    menu: true
 }
 
 const combinations = {
@@ -179,15 +180,22 @@ const startTheGame = () => {
         generatingElements(settings[values.selectedMode]);
         countingTime("cout");
         document.querySelector('#game-menu').classList.remove('active-game-menu')
+        values.menu = false;
     }
 }
 
 document.querySelector('#start-the-game').addEventListener('click', startTheGame)
 
 const pauseOn = () => {
-    document.querySelector('#pause-game').classList.add('pause-game-active');
-    countingTime("stop");
-    values.pause = true;
+    if (values.menu !== true) {
+        document.querySelector('#pause-game').classList.add('pause-game-active');
+        countingTime("stop");
+        values.pause = true;
+    }
+    else {
+        console.log("menu jest włączone")
+    }
+
 }
 document.querySelector('#pauza').addEventListener('click', pauseOn)
 
@@ -195,19 +203,26 @@ const pauseOff = () => {
     document.querySelector('#pause-game').classList.remove('pause-game-active');
     countingTime("cout");
     values.pause = false;
+    values.menu = false;
 }
 document.querySelector('#pause-game-off').addEventListener('click', pauseOff)
 
 const resetGame = () => {
-    if (values.pause == false) {
-        countingTime("reset");
-        generatingElements(settings[values.selectedMode]);
-        values.numberOfChanges = 0;
-        document.querySelector('#number-of-shifts').textContent = values.numberOfChanges;
+    if (values.menu !== true) {
+        if (values.pause == false) {
+            countingTime("reset");
+            generatingElements(settings[values.selectedMode]);
+            values.numberOfChanges = 0;
+            document.querySelector('#number-of-shifts').textContent = values.numberOfChanges;
+        }
+        else {
+            console.log("gra jest zapauzowana")
+        }
     }
     else {
-        console.log("gra jest zapauzowana")
+        console.log("menu jest włączone")
     }
+
 }
 
 document.querySelector('#start').addEventListener('click', resetGame)
@@ -219,36 +234,24 @@ const availablePuzzleForClick = (col, idEmpty) => {
     const puzzleLeft = [];
     const puzzleRight = [];
 
-    // let r = 1;
-
     let dataRight = 1;
     let dataLeft = col;
+
     for (let i = 0; i < (col -2); i++) {
         puzzleRight.push(dataRight += col);
         puzzleLeft.push(dataLeft += (col) );
     }
 
-    // console.log(puzzleRight);
-
-    // console.log(puzzleLeft)
-
     if ((puzzleRight.includes(idEmpty)) || (puzzleLeft.includes(idEmpty)) || (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty )) {
         capabilities.push(idEmpty - col);
         capabilities.push(idEmpty + col);
-        // console.log("prawo albo lewo")
-        if (puzzleRight.includes(idEmpty)) {
-            capabilities.push(idEmpty + 1);
-            // console.log("prawo")
-        }
-        if (puzzleLeft.includes(idEmpty)) {
-            capabilities.push(idEmpty - 1);
-            // console.log("lewo")
-        }
+        if (puzzleRight.includes(idEmpty)) capabilities.push(idEmpty + 1)
+
+        if (puzzleLeft.includes(idEmpty)) capabilities.push(idEmpty - 1);
 
         if (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty && !puzzleLeft.includes(idEmpty) && !puzzleRight.includes(idEmpty)) {
             capabilities.push(idEmpty - 1);
             capabilities.push(idEmpty + 1);
-            // console.log("śroek")
         }
     }
 
@@ -279,8 +282,6 @@ const availablePuzzleForClick = (col, idEmpty) => {
     }
     console.log(capabilities)
 }
-
-// availablePuzzleForClick(6, 24) //7//14//19
 
 
 
