@@ -55,32 +55,56 @@ const translatingPuzzles = () => {
     indexElementDrawn = (Math.random() * (capabilities.length -1)).toFixed(0);
     const puzzleToMove = document.querySelector(`#puzzle-piece[data-in-which-element="${capabilities[indexElementDrawn]}"]`)
     emptyElement();
-    generatingASingleElement(emptyElementId, puzzleToMove.dataset.value, puzzleToMove.dataset.inWhichElement)
+    generatingASingleElement(emptyElementId, puzzleToMove.dataset.value, puzzleToMove.dataset.inWhichElement, true)
+    
 }
 
-const generatingASingleElement = (id, value, inWhatElement) => {
-    document.querySelector(`[data-in-which-element="${inWhatElement}"`).remove();
-    const toTheItem = document.querySelector(`#space-for-a-puzzle[data-id="${id}"]`)
-    const element = document.createElement('div');
-    element.dataset.inWhichElement = toTheItem.dataset.id
-    element.className = "puzzle-piece";
-    element.id = "puzzle-piece";
-    element.textContent = value;
-    element.dataset.value = value;
-    toTheItem.appendChild(element);
+const generatingASingleElement = (id, value, inWhatElement, translating) => {
+    let removeAfterSeconds = () => {
+        document.querySelector(`[data-in-which-element="${inWhatElement}"`).remove();
+        
+    }
+    let generating = () => {
+        const toTheItem = document.querySelector(`#space-for-a-puzzle[data-id="${id}"]`)
+        const element = document.createElement('div');
+        element.dataset.inWhichElement = toTheItem.dataset.id
+        element.className = "puzzle-piece";
+        element.id = "puzzle-piece";
+        element.textContent = value;
+        element.dataset.value = value;
+        toTheItem.appendChild(element);
+    
+        
+        givePossibilityToMove();
+        validation();
+        puzzleAvaiableForTransfer();
+    }
 
-    givePossibilityToMove();
-    validation();
-    puzzleAvaiableForTransfer();
+    if (translating) {
+        document.querySelector(`[data-in-which-element="${inWhatElement}"`).remove();
+        generating();
+    }
+    else {
+        setTimeout(removeAfterSeconds, 150)
+        setTimeout(generating, 150)
+        
+    }
+
+
+
 }
-
 
 const movingElements = (e) => {
     emptyElement();
     availablePuzzleForClick(values.col, Number(emptyElementId))
     if(capabilities.includes(Number(e.target.dataset.inWhichElement))) {
+        slidingEffect(e.target.dataset.inWhichElement, capabilities, puzzlePosition)
         generatingASingleElement(emptyElementId, e.currentTarget.dataset.value, e.target.dataset.inWhichElement);
         nextMove();
+
+        // emptyElement();
+        // availablePuzzleForClick(values.col, Number(emptyElementId))
+        // slidingEffect(e.target.dataset.inWhichElement, capabilities, puzzlePosition)
     }
     else {
         console.log("nie możesz")
@@ -193,13 +217,13 @@ const backToTheMenu = () => {
 document.querySelector('#choose-again').addEventListener('click', backToTheMenu)
 
 const puzzleAvaiableForTransfer = () => {
-    document.querySelectorAll('#puzzle-piece').forEach(element => element.classList.remove('puzzle-active-for-move'))
+    // document.querySelectorAll('#puzzle-piece').forEach(element => element.classList.remove('puzzle-active-for-move'))
 
     emptyElement();
     availablePuzzleForClick(values.col, Number(emptyElementId))
 
     capabilities.forEach(id => {
-        document.querySelector(`#puzzle-piece[data-in-which-element="${id}"]`).classList.add('puzzle-active-for-move');
+        // document.querySelector(`#puzzle-piece[data-in-which-element="${id}"]`).classList.add('puzzle-active-for-move');
     })
 }
 
@@ -291,41 +315,72 @@ const availablePuzzleForClick = (col, idEmpty) => {
     }
 }
 
-window.addEventListener('keydown', (e) => {
-    switch (e.keyCode) {
-      case 37: // Left
-        console.log("lewo")
-        arrowControl("left")
-      break;
+// window.addEventListener('keydown', (e) => {
+//     switch (e.keyCode) {
+//       case 37: // Left
+//         console.log("lewo")
+//         arrowControl("left")
+//       break;
    
-      case 38: // Up
-        console.log("góra")
-        arrowControl("top")
-      break;
+//       case 38: // Up
+//         console.log("góra")
+//         arrowControl("top")
+//       break;
    
-      case 39: // Right
-        console.log("prawo")
-        arrowControl("right")
-      break;
+//       case 39: // Right
+//         console.log("prawo")
+//         arrowControl("right")
+//       break;
    
-      case 40: // Down
-        console.log("dół")
-        arrowControl("bottom")
-      break;
-    }
-  }, false);
+//       case 40: // Down
+//         console.log("dół")
+//         arrowControl("bottom")
+//       break;
+//     }
+//   }, false);
 
-const arrowControl = (position) => {
-    // console.log(position)
-    // if (puzzlePosition.includes(position)) {
-    //     console.log("jest")
-    //     const indexElement = puzzlePosition.indexOf(position)
-    //     console.log(capabilities[indexElement])
-    //     generatingASingleElement(index, )
-    // }
-    // else {
-    //     console.log("nie ma ")
-    // }
+// const arrowControl = (position) => {
+//     // console.log(position)
+//     if (puzzlePosition.includes(position)) {
+//         emptyElement();
+//         console.log("jest")
+        
+//         const indexElement = puzzlePosition.indexOf(position)
+
+//         const element = document.querySelector(`[data-in-which-element="${indexElement}"`)
+//         // console.log(capabilities[indexElement])
+//         console.log(element);
+//         generatingASingleElement(emptyElementId, element.dataset.value, element.dataset.inWhichElement  )
+//     }
+//     else {
+//         console.log("nie ma ")
+//     }
+// }
+
+const slidingEffect = (puzzelId, capabilities, positions) => {
+    // emptyElement()
+    // availablePuzzleForClick(values.col, Number(emptyElementId))
+    // console.log(capabilities, positions);
+
+    // console.log(capabilities.indexOf(Number(puzzelId)))
+
+    console.log(positions[capabilities.indexOf(Number(puzzelId))])
+
+    console.log(document.querySelector(`#puzzle-piece[data-in-which-element="${puzzelId}"]`))
+
+
+    if (positions[capabilities.indexOf(Number(puzzelId))] === "top") {
+        document.querySelector(`#puzzle-piece[data-in-which-element="${puzzelId}"]`).style.transform = "translate(0px,200px)"
+    }
+    if (positions[capabilities.indexOf(Number(puzzelId))] === "bottom") {
+        document.querySelector(`#puzzle-piece[data-in-which-element="${puzzelId}"]`).style.transform = "translate(0px,-200px)"
+    }
+    if (positions[capabilities.indexOf(Number(puzzelId))] === "right") {
+        document.querySelector(`#puzzle-piece[data-in-which-element="${puzzelId}"]`).style.transform = "translate(-200px,00px)"
+    }
+    if (positions[capabilities.indexOf(Number(puzzelId))] === "left") {
+        document.querySelector(`#puzzle-piece[data-in-which-element="${puzzelId}"]`).style.transform = "translate(200px,00px)"
+    }
 }
 
 let emptyElementId;

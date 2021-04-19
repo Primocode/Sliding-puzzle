@@ -311,6 +311,11 @@ body {
   fill: #a0a0a0;
 }
 
+.puzzle-piece {
+  -webkit-transition-duration: 0.15s;
+          transition-duration: 0.15s;
+}
+
 .puzzle-active-for-move {
   background: rgba(68, 56, 67, 0.95) !important;
   cursor: pointer;
