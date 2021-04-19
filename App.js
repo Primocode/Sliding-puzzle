@@ -36,12 +36,19 @@ const generatingElements = (level) => {
         const element = document.createElement('div');
         element.className = "puzzle-piece";
         element.id = "puzzle-piece";
+        element.textContent = i + 1;
+        element.dataset.value = i + 1;
         element.dataset.inWhichElement = mainElement[i].dataset.id
         mainElement[i].appendChild(element);
     }
-    drawNumbers();
+    // drawNumbers();
+
+    
     givePossibilityToMove();
     puzzleAvaiableForTransfer();
+    for (let i = 0; i < (values.col * 20); i++) {
+        translatingPuzzles();
+    }
 }
 
 const checkFreeItem = (puzzleNumber, inWhichElement) => {
@@ -53,26 +60,41 @@ const checkFreeItem = (puzzleNumber, inWhichElement) => {
     })
 }
 
-const drawNumbers = () => {
-    const puzzle = document.querySelectorAll('#puzzle-piece');
-    const values = [];
-    for (let i = 1; i <= puzzle.length; i++ ) {
-        drawn = 0;
-        grow = true;
-        while (grow) {
-            drawn = Number((Math.random() * (puzzle.length - 1) + 1).toFixed(0));
-            if (!values.includes(drawn)) {
-                values.push(drawn);
-                grow = false;
-                puzzle[i - 1].textContent = drawn;
-                puzzle[i - 1].dataset.value = drawn
-            }
+// const drawNumbers = () => {
+//     const puzzle = document.querySelectorAll('#puzzle-piece');
+//     const values = [];
+//     for (let i = 1; i <= puzzle.length; i++ ) {
+//         drawn = 0;
+//         grow = true;
+//         while (grow) {
+//             drawn = Number((Math.random() * (puzzle.length - 1) + 1).toFixed(0));
+//             if (!values.includes(drawn)) {
+//                 values.push(drawn);
+//                 grow = false;
+//                 puzzle[i - 1].textContent = drawn;
+//                 puzzle[i - 1].dataset.value = drawn
+//             }
+//         }
+//     }
+//     validation();
+// }
+
+const translatingPuzzles = () => {
+    const allComponents = document.querySelectorAll('#space-for-a-puzzle')
+
+    let indexElementDrawn
+    allComponents.forEach(element => {
+        if (!document.querySelector(`#puzzle-piece[data-in-which-element="${element.dataset.id}"]`)) {
+            indexElementDrawn = (Math.random() * (capabilities.length -1)).toFixed(0);
+            console.log(indexElementDrawn)
+            const puzzleToMove = document.querySelector(`#puzzle-piece[data-in-which-element="${capabilities[indexElementDrawn]}"]`)
+            generatingASingleElement(element.dataset.id, puzzleToMove.dataset.value, puzzleToMove.dataset.inWhichElement)
         }
-    }
-    validation();
+    })
 }
 
-const generatingASingleElement = (id, value) => {
+const generatingASingleElement = (id, value, inWhatElement) => {
+    document.querySelector(`[data-in-which-element="${inWhatElement}"`).remove();
     const toTheItem = document.querySelector(`#space-for-a-puzzle[data-id="${id}"]`)
     const element = document.createElement('div');
     element.dataset.inWhichElement = toTheItem.dataset.id
@@ -92,8 +114,8 @@ const movingElements = (e) => checkFreeItem(e.currentTarget.dataset.value, e.tar
 const possibilityOfShifting = (freeSpace, whichElement, inWhatElement) => {
     availablePuzzleForClick(values.col, Number(freeSpace))
     if(capabilities.includes(Number(inWhatElement))) {
-        document.querySelector(`[data-in-which-element="${inWhatElement}"`).remove();
-        generatingASingleElement(freeSpace, whichElement);
+        
+        generatingASingleElement(freeSpace, whichElement, inWhatElement);
         nextMove();
     }
     else {
