@@ -64,6 +64,9 @@ body {
                     font-size: 16px;
                 }
             }
+            @media (max-width: 700px) {
+                // justify-content: center;
+            }
         }
     }
     &-content {
@@ -168,6 +171,7 @@ body {
                 }
 
                 &-container-for-btns {
+                    flex-wrap: wrap;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -180,7 +184,7 @@ body {
                         height: 29px;
                         cursor: pointer;
                         border-radius: 50px;
-                        margin: 0px 10px;
+                        margin: 10px 10px;
                     }
                     .mode-selection-active {
                         filter: brightness(70%);
@@ -204,7 +208,21 @@ body {
                     background-repeat: round;
                 }
             }
+            @media (max-width: 700px) {
+                height: 500px;
+                width: 500px;
+            }
+            @media (max-width: 600px) {
+                height: 400px;
+                width: 400px;
+            }
+            @media (max-width: 475px) {
+                height: 300px;
+                width: 300px;
+            }
+
         }
+
         .pause-game {
             display: none;
         }
@@ -232,6 +250,18 @@ body {
                     }
                 }
             }
+        }
+        @media (max-width: 700px) {
+            height: 500px;
+            width: 500px;
+        }
+        @media (max-width: 600px) {
+            height: 400px;
+            width: 400px;
+        }
+        @media (max-width: 475px) {
+            height: 300px;
+            width: 300px;
         }
     }
 }

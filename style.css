@@ -230,6 +230,8 @@ body {
 }
 
 .puzzle-container-content .puzzle-blur-mode-container-for-btns {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -250,7 +252,7 @@ body {
   height: 29px;
   cursor: pointer;
   border-radius: 50px;
-  margin: 0px 10px;
+  margin: 10px 10px;
 }
 
 .puzzle-container-content .puzzle-blur-mode-container-for-btns .mode-selection-active {
@@ -279,6 +281,27 @@ body {
   border-radius: 50px;
   margin: 0px 10px;
   background-repeat: round;
+}
+
+@media (max-width: 700px) {
+  .puzzle-container-content .puzzle-blur {
+    height: 500px;
+    width: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  .puzzle-container-content .puzzle-blur {
+    height: 400px;
+    width: 400px;
+  }
+}
+
+@media (max-width: 475px) {
+  .puzzle-container-content .puzzle-blur {
+    height: 300px;
+    width: 300px;
+  }
 }
 
 .puzzle-container-content .pause-game {
@@ -312,6 +335,27 @@ body {
 
 .puzzle-container-content .pause-game-active .pause-game-active-btn:hover svg path {
   fill: #a0a0a0;
+}
+
+@media (max-width: 700px) {
+  .puzzle-container-content {
+    height: 500px;
+    width: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  .puzzle-container-content {
+    height: 400px;
+    width: 400px;
+  }
+}
+
+@media (max-width: 475px) {
+  .puzzle-container-content {
+    height: 300px;
+    width: 300px;
+  }
 }
 
 .puzzle-piece {

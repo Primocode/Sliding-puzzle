@@ -1,5 +1,8 @@
 let capabilities = [];
 let puzzlePosition = [];
+let isMovingElement = true;
+let timeLockOnArrows = true;
+let timeLockOnClick = true;
 
 const values = {
     numberOfChanges: 1,
@@ -8,12 +11,6 @@ const values = {
     pause: false,
     menu: true,
     col: null,
-}
-
-const settings = {
-    "4": {
-
-    }
 }
 
 const validation = () => {
@@ -36,7 +33,6 @@ const generatingElements = (level) => {
         mainElement.id = "space-for-a-puzzle";
         mainElement.dataset.id = i + 1;
         spaceForAPuzzle.appendChild(mainElement);
-        // giveWidthHeight([mainElement]);
     } 
     const mainElement = document.querySelectorAll('#space-for-a-puzzle') 
 
@@ -94,22 +90,25 @@ const generatingASingleElement = (id, value, inWhatElement, translating) => {
     }
 }
 
-let timeLockOnClick = true;
 
 const movingElements = (e) => {
     if (timeLockOnClick) {
-        setTimeout(function(){ timeLockOnClick = true; }, 150);
-        timeLockOnClick = false;
-
-        emptyElement();
-        availablePuzzleForClick(values.col, Number(emptyElementId))
-        if(capabilities.includes(Number(e.target.dataset.inWhichElement))) {
-            slidingEffect(e.target.dataset.inWhichElement, capabilities, puzzlePosition)
-            generatingASingleElement(emptyElementId, e.currentTarget.dataset.value, e.target.dataset.inWhichElement, null);
-            nextMove();
-        }
-        else {
-            console.log("nie możesz")
+        if (isMovingElement) {
+            isMovingElement = false;
+            setTimeout(function(){ timeLockOnClick = true; isMovingElement = true}, 160);
+            timeLockOnClick = false;
+    
+            emptyElement();
+            availablePuzzleForMove(values.col, Number(emptyElementId))
+            if(capabilities.includes(Number(e.target.dataset.inWhichElement))) {
+                slidingEffect(e.target.dataset.inWhichElement, capabilities, puzzlePosition)
+                generatingASingleElement(emptyElementId, e.currentTarget.dataset.value, e.target.dataset.inWhichElement, null);
+                nextMove();
+            }
+            else {
+                console.log("nie możesz")
+                
+            }
         }
     }
 }
@@ -153,32 +152,18 @@ const startTheGame = () => {
         document.querySelector('#puzzle-container').classList.add("puzzle-" + values.col)
         generatingElements(values.col * values.col);
         countingTime("cout");
-        menu(false);
-        values.menu = false;
         
+        values.menu = false;
+        menu();
     }
 }
 
-// const giveWidthHeight = (el) => {
-//     console.log(values.col)
-//     el.forEach(item => {
-//         console.log(item)
-//         item.style.height = "200px";
-//         item.style.width = "200px";
-//     })
-//     if (window.innerWidth < 700) {
-//         console.log("jest większe od 600")
-//     }
-// }
-
-
-
 document.querySelector('#start-the-game').addEventListener('click', startTheGame)
 
-const menu = (switchMenu) => {
-    if (switchMenu) document.querySelector('#game-menu').classList.add('active-game-menu')
+const menu = () => {
+    if (values.menu) document.querySelector('#game-menu').classList.add('active-game-menu');
     
-    else document.querySelector('#game-menu').classList.remove('active-game-menu')
+    else document.querySelector('#game-menu').classList.remove('active-game-menu');
 }
 
 const pauseOn = () => {
@@ -188,7 +173,7 @@ const pauseOn = () => {
         values.pause = true;
     }
     else {
-        console.log("menu jest włączone")
+        console.log("menu jest włączone");
     }
 }
 document.querySelector('#pauza').addEventListener('click', pauseOn)
@@ -217,36 +202,36 @@ const resetGame = () => {
         console.log("menu jest włączone")
     }
 }
-
 document.querySelector('#start').addEventListener('click', resetGame)
 
 const backToTheMenu = () => {
+    document.querySelector('.puzzle-container-content-container').classList.remove(`puzzle-${values.col}`)
     document.querySelectorAll('#space-for-a-puzzle').forEach(item => {
         item.remove();
     })
+
     pauseOff();
     countingTime("reset");
     countingTime("stop");
-    menu(true);
+    values.menu = true;
+    menu();
     values.numberOfChanges = 0;
     nextMove();
 }
-
-document.querySelector('#choose-again').addEventListener('click', backToTheMenu)
+document.querySelector('#choose-again').addEventListener('click', backToTheMenu);
 
 const puzzleAvaiableForTransfer = () => {
     document.querySelectorAll('#puzzle-piece').forEach(element => element.classList.remove('puzzle-active-for-move'))
 
     emptyElement();
-    availablePuzzleForClick(values.col, Number(emptyElementId))
+    availablePuzzleForMove(values.col, Number(emptyElementId))
 
     capabilities.forEach(id => {
         document.querySelector(`#puzzle-piece[data-in-which-element="${id}"]`).classList.add('puzzle-active-for-move');
     })
 }
 
-const availablePuzzleForClick = (col, idEmpty) => {
-    // console.log(col, idEmpty)
+const availablePuzzleForMove = (col, idEmpty) => {
     capabilities = [];
     puzzlePosition = [];
     const puzzleQuantity = col * col
@@ -333,29 +318,39 @@ const availablePuzzleForClick = (col, idEmpty) => {
     }
 }
 
-let timeLockOnArrows = true;
 
 window.addEventListener('keydown', (e) => {
     if (timeLockOnArrows) {
-        setTimeout(function(){ timeLockOnArrows = true; }, 150);
-        timeLockOnArrows = false;
-        switch (e.keyCode) {
-            case 37: 
-              arrowControl("left")
-            break;
-         
-            case 38: 
-              arrowControl("top")
-            break;
-         
-            case 39: 
-              arrowControl("right")
-            break;
-         
-            case 40:
-              arrowControl("bottom")
-            break;
-          }
+        if (isMovingElement) {
+            isMovingElement = false;
+            setTimeout(function(){ timeLockOnArrows = true; isMovingElement = true}, 160);
+            timeLockOnArrows = false;
+            if (values.pause !== true) {
+                switch (e.keyCode) {
+                    case 37: 
+                      arrowControl("left")
+                    break;
+                 
+                    case 38: 
+                      arrowControl("top")
+                    break;
+                 
+                    case 39: 
+                      arrowControl("right")
+                    break;
+                 
+                    case 40:
+                      arrowControl("bottom")
+                    break;
+                  }
+            }
+            else {
+                console.log("pauza jest włączona")
+            }
+        }
+    }
+    else {
+        console.log("za szybko")
     }
 
 }, false);
@@ -379,10 +374,9 @@ const arrowControl = (position) => {
 
 const slidingEffect = (puzzelId, capabilities, positions) => {
     const sizeItem = document.querySelector(`.puzzle-piece-container`);
-
     const size = getComputedStyle(sizeItem).height;
-
     const elementToBeMoved = document.querySelector(`#puzzle-piece[data-in-which-element="${puzzelId}"]`)
+
     if (positions[capabilities.indexOf(Number(puzzelId))] === "top") {
         elementToBeMoved.style.transform = `translate(0px, ${size})`
     }
