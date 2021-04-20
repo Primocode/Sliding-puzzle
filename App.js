@@ -10,6 +10,12 @@ const values = {
     col: null,
 }
 
+const settings = {
+    "4": {
+
+    }
+}
+
 const validation = () => {
     const inTheElement = document.querySelectorAll('#puzzle-piece');
     inTheElement.forEach(item => {
@@ -30,6 +36,7 @@ const generatingElements = (level) => {
         mainElement.id = "space-for-a-puzzle";
         mainElement.dataset.id = i + 1;
         spaceForAPuzzle.appendChild(mainElement);
+        // giveWidthHeight([mainElement]);
     } 
     const mainElement = document.querySelectorAll('#space-for-a-puzzle') 
 
@@ -56,7 +63,6 @@ const translatingPuzzles = () => {
     const puzzleToMove = document.querySelector(`#puzzle-piece[data-in-which-element="${capabilities[indexElementDrawn]}"]`)
     emptyElement();
     generatingASingleElement(emptyElementId, puzzleToMove.dataset.value, puzzleToMove.dataset.inWhichElement, true)
-    
 }
 
 const generatingASingleElement = (id, value, inWhatElement, translating) => {
@@ -149,8 +155,23 @@ const startTheGame = () => {
         countingTime("cout");
         menu(false);
         values.menu = false;
+        
     }
 }
+
+// const giveWidthHeight = (el) => {
+//     console.log(values.col)
+//     el.forEach(item => {
+//         console.log(item)
+//         item.style.height = "200px";
+//         item.style.width = "200px";
+//     })
+//     if (window.innerWidth < 700) {
+//         console.log("jest większe od 600")
+//     }
+// }
+
+
 
 document.querySelector('#start-the-game').addEventListener('click', startTheGame)
 
@@ -347,7 +368,6 @@ const arrowControl = (position) => {
 
         const element = document.querySelector(`[data-in-which-element="${capabilities[indexElement]}"`)
 
-
         slidingEffect(element.dataset.inWhichElement, capabilities, puzzlePosition)
         generatingASingleElement(emptyElementId, element.dataset.value, element.dataset.inWhichElement, null)
         nextMove();
@@ -358,18 +378,22 @@ const arrowControl = (position) => {
 }
 
 const slidingEffect = (puzzelId, capabilities, positions) => {
+    const sizeItem = document.querySelector(`.puzzle-piece-container`);
+
+    const size = getComputedStyle(sizeItem).height;
+
     const elementToBeMoved = document.querySelector(`#puzzle-piece[data-in-which-element="${puzzelId}"]`)
     if (positions[capabilities.indexOf(Number(puzzelId))] === "top") {
-        elementToBeMoved.style.transform = "translate(0px,200px)"
+        elementToBeMoved.style.transform = `translate(0px, ${size})`
     }
     if (positions[capabilities.indexOf(Number(puzzelId))] === "bottom") {
-        elementToBeMoved.style.transform = "translate(0px,-200px)"
+        elementToBeMoved.style.transform = `translate(0px,-${size})`
     }
     if (positions[capabilities.indexOf(Number(puzzelId))] === "right") {
-        elementToBeMoved.style.transform = "translate(-200px,00px)"
+        elementToBeMoved.style.transform = `translate(-${size},00px)`
     }
     if (positions[capabilities.indexOf(Number(puzzelId))] === "left") {
-        elementToBeMoved.style.transform = "translate(200px,00px)"
+        elementToBeMoved.style.transform = `translate(${size},00px)`
     }
 }
 
