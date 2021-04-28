@@ -3,6 +3,7 @@ let puzzlePosition = [];
 let isMovingElement = true;
 let timeLockOnArrows = true;
 let timeLockOnClick = true;
+let emptyElementId;
 
 const values = {
     numberOfChanges: 1,
@@ -14,32 +15,30 @@ const values = {
 }
 
 const validation = () => {
-    const inTheElement = document.querySelectorAll('#puzzle-piece');
+    const inTheElement = document.querySelectorAll('.puzzle-piece');
     inTheElement.forEach(item => {
         if (item.dataset.value === item.dataset.inWhichElement) item.classList.add("puzzle-piece-correct"); 
     })
 }
 
-const givePossibilityToMove = () => document.querySelectorAll('#puzzle-piece').forEach(item => item.addEventListener('click', movingElements));
+const givePossibilityToMove = () => document.querySelectorAll('.puzzle-piece').forEach(item => item.addEventListener('click', movingElements));
 
 const generatingElements = (level) => {
     const spaceForAPuzzle = document.querySelector('#puzzle-container');
 
-    document.querySelectorAll('#space-for-a-puzzle').forEach(item => item.remove())
+    document.querySelectorAll('.puzzle-piece-container').forEach(item => item.remove())
 
     for (let i = 0; i < level; i++) {
         const mainElement = document.createElement('div');
         mainElement.className = "puzzle-piece-container";
-        mainElement.id = "space-for-a-puzzle";
         mainElement.dataset.id = i + 1;
         spaceForAPuzzle.appendChild(mainElement);
     } 
-    const mainElement = document.querySelectorAll('#space-for-a-puzzle') 
+    const mainElement = document.querySelectorAll('.puzzle-piece-container') 
 
     for (let i = 0; i < mainElement.length - 1; i++) {
         const element = document.createElement('div');
         element.className = "puzzle-piece";
-        element.id = "puzzle-piece";
         element.textContent = i + 1;
         element.dataset.value = i + 1;
         element.dataset.inWhichElement = mainElement[i].dataset.id
@@ -56,17 +55,17 @@ const generatingElements = (level) => {
 const translatingPuzzles = () => {
     let indexElementDrawn;
     indexElementDrawn = (Math.random() * (capabilities.length -1)).toFixed(0);
-    const puzzleToMove = document.querySelector(`#puzzle-piece[data-in-which-element="${capabilities[indexElementDrawn]}"]`)
+    const puzzleToMove = document.querySelector(`.puzzle-piece[data-in-which-element="${capabilities[indexElementDrawn]}"]`)
     emptyElement();
     generatingASingleElement(emptyElementId, puzzleToMove.dataset.value, puzzleToMove.dataset.inWhichElement, true)
 }
 
 const generatingASingleElement = (id, value, inWhatElement, translating) => {
-    let removeAfterSeconds = () => {
+    const removeAfterSeconds = () => {
         document.querySelector(`[data-in-which-element="${inWhatElement}"`).remove();
     }
-    let generating = () => {
-        const toTheItem = document.querySelector(`#space-for-a-puzzle[data-id="${id}"]`)
+    const generating = () => {
+        const toTheItem = document.querySelector(`.puzzle-piece-container[data-id="${id}"]`)
         const element = document.createElement('div');
         element.dataset.inWhichElement = toTheItem.dataset.id
         element.className = "puzzle-piece";
@@ -190,7 +189,9 @@ const resetGame = () => {
     if (values.menu !== true) {
         if (values.pause == false) {
             countingTime("reset");
+
             generatingElements(values.col * values.col);
+
             values.numberOfChanges = 0;
             document.querySelector('#number-of-shifts').textContent = values.numberOfChanges;
         }
@@ -206,9 +207,7 @@ document.querySelector('#start').addEventListener('click', resetGame)
 
 const backToTheMenu = () => {
     document.querySelector('.puzzle-container-content-container').classList.remove(`puzzle-${values.col}`)
-    document.querySelectorAll('#space-for-a-puzzle').forEach(item => {
-        item.remove();
-    })
+    document.querySelectorAll('.puzzle-piece-container').forEach(item => item.remove())
 
     pauseOff();
     countingTime("reset");
@@ -221,13 +220,13 @@ const backToTheMenu = () => {
 document.querySelector('#choose-again').addEventListener('click', backToTheMenu);
 
 const puzzleAvaiableForTransfer = () => {
-    document.querySelectorAll('#puzzle-piece').forEach(element => element.classList.remove('puzzle-active-for-move'))
+    document.querySelectorAll('.puzzle-piece').forEach(element => element.classList.remove('puzzle-active-for-move'))
 
     emptyElement();
     availablePuzzleForMove(values.col, Number(emptyElementId))
 
     capabilities.forEach(id => {
-        document.querySelector(`#puzzle-piece[data-in-which-element="${id}"]`).classList.add('puzzle-active-for-move');
+        document.querySelector(`.puzzle-piece[data-in-which-element="${id}"]`).classList.add('puzzle-active-for-move');
     })
 }
 
@@ -375,7 +374,7 @@ const arrowControl = (position) => {
 const slidingEffect = (puzzelId, capabilities, positions) => {
     const sizeItem = document.querySelector(`.puzzle-piece-container`);
     const size = getComputedStyle(sizeItem).height;
-    const elementToBeMoved = document.querySelector(`#puzzle-piece[data-in-which-element="${puzzelId}"]`)
+    const elementToBeMoved = document.querySelector(`.puzzle-piece[data-in-which-element="${puzzelId}"]`)
 
     if (positions[capabilities.indexOf(Number(puzzelId))] === "top") {
         elementToBeMoved.style.transform = `translate(0px, ${size})`
@@ -391,11 +390,11 @@ const slidingEffect = (puzzelId, capabilities, positions) => {
     }
 }
 
-let emptyElementId;
+
 const emptyElement = () => {
-    const allComponents = document.querySelectorAll('#space-for-a-puzzle')
+    const allComponents = document.querySelectorAll('.puzzle-piece-container')
     allComponents.forEach(element => {
-        if (!document.querySelector(`#puzzle-piece[data-in-which-element="${element.dataset.id}"]`)) {
+        if (!document.querySelector(`.puzzle-piece[data-in-which-element="${element.dataset.id}"]`)) {
             emptyElementId = element.dataset.id;
         }
     })
