@@ -1,12 +1,10 @@
 let capabilities = [];
 let puzzlePosition = [];
-let isMovingElement = true;
-let timeLockOnArrows = true;
-let timeLockOnClick = true;
+let isMovingElement = false;
 let emptyElementId;
 
 const values = {
-    numberOfChanges: 1,
+    numberOfChanges: 0,
     selectedMode: null,
     seconds: 0,
     pause: false,
@@ -23,12 +21,12 @@ const validation = () => {
 
 const givePossibilityToMove = () => document.querySelectorAll('.puzzle-piece').forEach(item => item.addEventListener('click', movingElements));
 
-const generatingElements = (level) => {
+const generatingElements = (quantity) => {
     const spaceForAPuzzle = document.querySelector('#puzzle-container');
 
     document.querySelectorAll('.puzzle-piece-container').forEach(item => item.remove())
 
-    for (let i = 0; i < level; i++) {
+    for (let i = 0; i < quantity; i++) {
         const mainElement = document.createElement('div');
         mainElement.className = "puzzle-piece-container";
         mainElement.dataset.id = i + 1;
@@ -53,8 +51,7 @@ const generatingElements = (level) => {
 }
 
 const translatingPuzzles = () => {
-    let indexElementDrawn;
-    indexElementDrawn = (Math.random() * (capabilities.length -1)).toFixed(0);
+    const indexElementDrawn = Math.floor((Math.random() * (capabilities.length))).toFixed(0);
     const puzzleToMove = document.querySelector(`.puzzle-piece[data-in-which-element="${capabilities[indexElementDrawn]}"]`)
     emptyElement();
     generatingASingleElement(emptyElementId, puzzleToMove.dataset.value, puzzleToMove.dataset.inWhichElement, true)
@@ -89,30 +86,27 @@ const generatingASingleElement = (id, value, inWhatElement, translating) => {
     }
 }
 
-
 const movingElements = (e) => {
-    if (timeLockOnClick) {
-        if (isMovingElement) {
-            isMovingElement = false;
-            setTimeout(function(){ timeLockOnClick = true; isMovingElement = true}, 160);
-            timeLockOnClick = false;
-    
-            emptyElement();
-            availablePuzzleForMove(values.col, Number(emptyElementId))
-            if(capabilities.includes(Number(e.target.dataset.inWhichElement))) {
-                slidingEffect(e.target.dataset.inWhichElement, capabilities, puzzlePosition)
-                generatingASingleElement(emptyElementId, e.currentTarget.dataset.value, e.target.dataset.inWhichElement, null);
-                nextMove();
-            }
-            else {
-                console.log("nie możesz")
-                
-            }
+    if (isMovingElement === false) {
+        isMovingElement = true;
+        setTimeout(() => { isMovingElement = false}, 160);
+        emptyElement();
+        availablePuzzleForMove(values.col, Number(emptyElementId))
+        if(capabilities.includes(Number(e.target.dataset.inWhichElement))) {
+            slidingEffect(e.target.dataset.inWhichElement, capabilities, puzzlePosition)
+            generatingASingleElement(emptyElementId, e.currentTarget.dataset.value, e.target.dataset.inWhichElement, null);
+            nextMove();
         }
+        else {
+            console.log("nie możesz")
+        }
+    }
+    else {
+        console.log("za szybko")
     }
 }
 
-const nextMove = () => document.querySelector('#number-of-shifts').textContent = values.numberOfChanges++;
+const nextMove = () => document.querySelector('#number-of-shifts').textContent = ++values.numberOfChanges;
 
 const modeSelection = (e) => {
     document.querySelectorAll('.mode-selection').forEach(item => item.classList.remove('mode-selection-active'))
@@ -123,52 +117,50 @@ const modeSelection = (e) => {
 document.querySelectorAll('.mode-selection').forEach(item => item.addEventListener('click', modeSelection))
 
 let counting;
-const countingTime = (perform) => {
-    window.clearInterval(counting)
-    if (perform === "cout") counting = setInterval(countingDown, 1000);
-    
-    if (perform === "stop") window.clearInterval(counting);
-    
-    if (perform === "reset") {
-        window.clearInterval(counting);
-        values.seconds = -1;
-        countingDown(true);
-        countingTime("cout");
-    }
+const countTheTime = () => counting = setInterval(displayCurrentTime, 1000)
+
+const stopCountTheTime = () => window.clearInterval(counting)
+
+const resetCountTheTime = () => {
+    window.clearInterval(counting);
+    values.seconds = -1;
+    countTheTime();
+    displayCurrentTime(true)
 }
 
-const countingDown = (reset) => {
+const displayCurrentTime = (resetCounter) => {
     const counter = document.querySelector('#time');
     values.seconds = ++values.seconds
     counter.textContent = values.seconds + "s"
-    if (reset) counter.textContent = "0s";
+    if (resetCounter) counter.textContent = "0s";
 }
 
 const startTheGame = () => {
-    if (values.col == null) console.log("wybierz tryb")
+    if (values.col === null) console.log("wybierz tryb")
      
     else {
         document.querySelector('#puzzle-container').classList.add("puzzle-" + values.col)
         generatingElements(values.col * values.col);
-        countingTime("cout");
-        
-        values.menu = false;
-        menu();
+        countTheTime();
+        menuOff();
     }
 }
-
 document.querySelector('#start-the-game').addEventListener('click', startTheGame)
 
-const menu = () => {
-    if (values.menu) document.querySelector('#game-menu').classList.add('active-game-menu');
-    
-    else document.querySelector('#game-menu').classList.remove('active-game-menu');
+const menuOn = () => {
+    values.menu = true;
+    document.querySelector('#game-menu').classList.add('active-game-menu');
+}
+
+const menuOff = () => {
+    values.menu = false;
+    document.querySelector('#game-menu').classList.remove('active-game-menu');
 }
 
 const pauseOn = () => {
-    if (values.menu !== true) {
+    if (values.menu === false) {
         document.querySelector('#pause-game').classList.add('pause-game-active');
-        countingTime("stop");
+        stopCountTheTime();
         values.pause = true;
     }
     else {
@@ -179,21 +171,23 @@ document.querySelector('#pauza').addEventListener('click', pauseOn)
 
 const pauseOff = () => {
     document.querySelector('#pause-game').classList.remove('pause-game-active');
-    countingTime("cout");
+    countTheTime();
     values.pause = false;
     values.menu = false;
 }
 document.querySelector('#pause-game-off').addEventListener('click', pauseOff)
 
+const resettingMoves = () => {
+    values.numberOfChanges = 0;
+    document.querySelector('#number-of-shifts').textContent = values.numberOfChanges;
+}
+
 const resetGame = () => {
-    if (values.menu !== true) {
-        if (values.pause == false) {
-            countingTime("reset");
-
+    if (values.menu === false) {
+        if (values.pause === false) {
+            resetCountTheTime();
             generatingElements(values.col * values.col);
-
-            values.numberOfChanges = 0;
-            document.querySelector('#number-of-shifts').textContent = values.numberOfChanges;
+            resettingMoves();
         }
         else {
             console.log("gra jest zapauzowana")
@@ -206,16 +200,18 @@ const resetGame = () => {
 document.querySelector('#start').addEventListener('click', resetGame)
 
 const backToTheMenu = () => {
-    document.querySelector('.puzzle-container-content-container').classList.remove(`puzzle-${values.col}`)
-    document.querySelectorAll('.puzzle-piece-container').forEach(item => item.remove())
-
-    pauseOff();
-    countingTime("reset");
-    countingTime("stop");
-    values.menu = true;
-    menu();
-    values.numberOfChanges = 0;
-    nextMove();
+    if (values.pause === false) {
+        document.querySelector('.puzzle-container-content-container').classList.remove(`puzzle-${values.col}`)
+        document.querySelectorAll('.puzzle-piece-container').forEach(item => item.remove())
+    
+        resetCountTheTime();
+        stopCountTheTime();
+        menuOn();
+        resettingMoves();
+    }
+    else {
+        console.log("pauza jest włączona")
+    }
 }
 document.querySelector('#choose-again').addEventListener('click', backToTheMenu);
 
@@ -317,41 +313,33 @@ const availablePuzzleForMove = (col, idEmpty) => {
     }
 }
 
-
 window.addEventListener('keydown', (e) => {
-    if (timeLockOnArrows) {
-        if (isMovingElement) {
-            isMovingElement = false;
-            setTimeout(function(){ timeLockOnArrows = true; isMovingElement = true}, 160);
-            timeLockOnArrows = false;
-            if (values.pause !== true) {
-                switch (e.keyCode) {
-                    case 37: 
-                      arrowControl("left")
-                    break;
-                 
-                    case 38: 
-                      arrowControl("top")
-                    break;
-                 
-                    case 39: 
-                      arrowControl("right")
-                    break;
-                 
-                    case 40:
-                      arrowControl("bottom")
-                    break;
-                  }
-            }
-            else {
-                console.log("pauza jest włączona")
+    if (values.pause === false ){
+        if (isMovingElement === false) {
+            isMovingElement = true;
+            setTimeout(() => { isMovingElement = false}, 160);
+            switch (e.keyCode) {
+                case 37: 
+                    arrowControl("left")
+                break;
+
+                case 38: 
+                    arrowControl("top")
+                break;
+
+                case 39: 
+                    arrowControl("right")
+                break;
+
+                case 40:
+                    arrowControl("bottom")
+                break;
             }
         }
     }
     else {
-        console.log("za szybko")
+        console.log("pauza jest włączona")
     }
-
 }, false);
 
 const arrowControl = (position) => {
@@ -374,22 +362,27 @@ const arrowControl = (position) => {
 const slidingEffect = (puzzelId, capabilities, positions) => {
     const sizeItem = document.querySelector(`.puzzle-piece-container`);
     const size = getComputedStyle(sizeItem).height;
+    const position = positions[capabilities.indexOf(Number(puzzelId))]
     const elementToBeMoved = document.querySelector(`.puzzle-piece[data-in-which-element="${puzzelId}"]`)
 
-    if (positions[capabilities.indexOf(Number(puzzelId))] === "top") {
-        elementToBeMoved.style.transform = `translate(0px, ${size})`
-    }
-    if (positions[capabilities.indexOf(Number(puzzelId))] === "bottom") {
-        elementToBeMoved.style.transform = `translate(0px,-${size})`
-    }
-    if (positions[capabilities.indexOf(Number(puzzelId))] === "right") {
-        elementToBeMoved.style.transform = `translate(-${size},00px)`
-    }
-    if (positions[capabilities.indexOf(Number(puzzelId))] === "left") {
-        elementToBeMoved.style.transform = `translate(${size},00px)`
+    switch (position) {
+        case "top":
+            elementToBeMoved.style.transform = `translate(0px, ${size})`
+        break;
+
+        case "bottom":
+            elementToBeMoved.style.transform = `translate(0px,-${size})`
+        break;
+
+        case "right":
+            elementToBeMoved.style.transform = `translate(-${size},00px)`
+        break;
+
+        case "left":
+            elementToBeMoved.style.transform = `translate(${size},00px)`
+        break;
     }
 }
-
 
 const emptyElement = () => {
     const allComponents = document.querySelectorAll('.puzzle-piece-container')
