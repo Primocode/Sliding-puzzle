@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: url('img/main-background.png');
+    background: url('../img/main-background.png');
 }
 
 * {
@@ -14,14 +14,12 @@ body {
     height: 100vh;
     width: 100%;
     display: flex;
-    // justify-content: center;
-    // align-items: center;
     flex-direction: column;
     align-items: center;
     &-place-for-info {
         margin: 30px 0px;
         &-content {
-            background: url('img/bakground-date.png');
+            background: url('../img/bakground-date.png');
             width: 626px;
             height: 104px;
             background-size: contain;
@@ -38,15 +36,11 @@ body {
                     font-size: 19px;
                 }
             }
-
             &-second {
-                // display: flex;
-                // justify-content: space-evenly;
-                // flex-direction: column;
                 margin-right: 30px;
                 button {
                     margin-top: 15px;
-                    background: url('img/btn.png');
+                    background: url('../img/btn.png');
                     border: none;
                     color: white;
                     font-size: 18px;
@@ -57,25 +51,21 @@ body {
                 }
                 .choose-again {
                     width: 190px;
-                    background: url('img/background-big.png');
+                    background: url('../img/background-big.png');
                     background-repeat: no-repeat;
                     background-size: cover;
                     height: 34px;
                     font-size: 16px;
                 }
             }
-            @media (max-width: 700px) {
-                // justify-content: center;
-            }
         }
     }
     &-content {
-        background: url('img/main-field-bg.png');
+        background: url('../img/main-field-bg.png');
         width: 600px;
         height: 600px;
         background-size: contain;
         background-color: rgba(61, 46, 60, 0.89);
-        // padding: 10px;
         position: relative;
         display: flex;
         align-items: center;
@@ -136,7 +126,6 @@ body {
                 }
             }
         }
-
         .puzzle-6 {
             .puzzle-piece-container {
                 height: 16.66666667%;
@@ -144,10 +133,8 @@ body {
                 .puzzle-piece {
                     font-size: 45px;
                 }
-                
             }
         }
-
         .active-game-menu {
             display: flex !important;
         }
@@ -176,7 +163,7 @@ body {
                     align-items: center;
                     justify-content: center;
                     button {
-                        background: url('img/btn.png');
+                        background: url('../img/btn.png');
                         border: none;
                         color: white;
                         font-size: 18px;
@@ -196,7 +183,7 @@ body {
                 display: flex;
                 justify-content: center;
                 button {
-                    background: url('img/btn.png');
+                    background: url('../img/btn.png');
                     border: none;
                     color: white;
                     font-size: 18px;
@@ -220,9 +207,7 @@ body {
                 height: 300px;
                 width: 300px;
             }
-
         }
-
         .pause-game {
             display: none;
         }
@@ -232,7 +217,6 @@ body {
             justify-content: center;
             width: 600px;
             height: 600px;
-            // filter: blur(3px);
             background-color: #00000085;
             position: absolute;
             .pause-game-active-btn {
@@ -273,4 +257,20 @@ body {
 .puzzle-active-for-move {
     background: rgba(68, 56, 67, 0.95) !important;
     cursor: pointer;
+}
+
+.message {
+    position: fixed;
+    margin: 15px;
+    width: 250px;
+    background-color: #ac1d35;
+    border: 1px solid red;
+    border-radius: 5px;
+    color: white;
+    font-size: 15px;
+    text-align: left;
+    z-index: 100;
+    padding: 15px;
+    right: 0;
+    top: 0;
 }

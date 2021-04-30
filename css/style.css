@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background: url("img/main-background.png");
+  background: url("../img/main-background.png");
 }
 
 * {
@@ -30,7 +30,7 @@ body {
 }
 
 .puzzle-container-place-for-info-content {
-  background: url("img/bakground-date.png");
+  background: url("../img/bakground-date.png");
   width: 626px;
   height: 104px;
   background-size: contain;
@@ -68,7 +68,7 @@ body {
 
 .puzzle-container-place-for-info-content-second button {
   margin-top: 15px;
-  background: url("img/btn.png");
+  background: url("../img/btn.png");
   border: none;
   color: white;
   font-size: 18px;
@@ -80,7 +80,7 @@ body {
 
 .puzzle-container-place-for-info-content-second .choose-again {
   width: 190px;
-  background: url("img/background-big.png");
+  background: url("../img/background-big.png");
   background-repeat: no-repeat;
   background-size: cover;
   height: 34px;
@@ -88,7 +88,7 @@ body {
 }
 
 .puzzle-container-content {
-  background: url("img/main-field-bg.png");
+  background: url("../img/main-field-bg.png");
   width: 600px;
   height: 600px;
   background-size: contain;
@@ -244,7 +244,7 @@ body {
 }
 
 .puzzle-container-content .puzzle-blur-mode-container-for-btns button {
-  background: url("img/btn.png");
+  background: url("../img/btn.png");
   border: none;
   color: white;
   font-size: 18px;
@@ -271,7 +271,7 @@ body {
 }
 
 .puzzle-container-content .puzzle-blur-start button {
-  background: url("img/btn.png");
+  background: url("../img/btn.png");
   border: none;
   color: white;
   font-size: 18px;
@@ -366,5 +366,21 @@ body {
 .puzzle-active-for-move {
   background: rgba(68, 56, 67, 0.95) !important;
   cursor: pointer;
+}
+
+.message {
+  position: fixed;
+  margin: 15px;
+  width: 250px;
+  background-color: #ac1d35;
+  border: 1px solid red;
+  border-radius: 5px;
+  color: white;
+  font-size: 15px;
+  text-align: left;
+  z-index: 100;
+  padding: 15px;
+  right: 0;
+  top: 0;
 }
 /*# sourceMappingURL=style.css.map */
