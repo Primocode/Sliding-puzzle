@@ -62,6 +62,12 @@ body {
   font-size: 19px;
 }
 
+@media (max-width: 600px) {
+  .puzzle-container-place-for-info-content-first span {
+    font-size: 16px;
+  }
+}
+
 .puzzle-container-place-for-info-content-second {
   margin-right: 30px;
 }
@@ -76,6 +82,16 @@ body {
   height: 29px;
   cursor: pointer;
   border-radius: 50px;
+  background-size: cover;
+}
+
+@media (max-width: 700px) {
+  .puzzle-container-place-for-info-content-second button {
+    width: 71px;
+    height: 26px;
+    font-size: 16px;
+    margin-top: 10px;
+  }
 }
 
 .puzzle-container-place-for-info-content-second .choose-again {
@@ -85,6 +101,45 @@ body {
   background-size: cover;
   height: 34px;
   font-size: 16px;
+}
+
+@media (max-width: 700px) {
+  .puzzle-container-place-for-info-content-second .choose-again {
+    margin-top: 10px;
+    width: 145px;
+    height: 30px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 700px) {
+  .puzzle-container-place-for-info-content {
+    width: 514px;
+    height: 86px;
+  }
+}
+
+@media (max-width: 600px) {
+  .puzzle-container-place-for-info-content {
+    background: url("../img/background-date-mobile.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .puzzle-container-place-for-info {
+    margin: 10px 0px 20px 0px;
+  }
+}
+
+@media (max-width: 600px) {
+  .puzzle-container-place-for-info {
+    margin-top: 0;
+    width: 100%;
+  }
 }
 
 .puzzle-container-content {
@@ -158,6 +213,12 @@ body {
   font-size: 80px;
 }
 
+@media (max-width: 550px) {
+  .puzzle-container-content .puzzle-3 .puzzle-piece-container .puzzle-piece {
+    font-size: 50px;
+  }
+}
+
 .puzzle-container-content .puzzle-4 .puzzle-piece-container {
   height: 25%;
   width: 25%;
@@ -165,6 +226,18 @@ body {
 
 .puzzle-container-content .puzzle-4 .puzzle-piece-container .puzzle-piece {
   font-size: 75px;
+}
+
+@media (max-width: 600px) {
+  .puzzle-container-content .puzzle-4 .puzzle-piece-container .puzzle-piece {
+    font-size: 55px;
+  }
+}
+
+@media (max-width: 475px) {
+  .puzzle-container-content .puzzle-4 .puzzle-piece-container .puzzle-piece {
+    font-size: 40px;
+  }
 }
 
 .puzzle-container-content .puzzle-5 .puzzle-piece-container {
@@ -177,6 +250,24 @@ body {
   font-size: 60px;
 }
 
+@media (max-width: 700px) {
+  .puzzle-container-content .puzzle-5 .puzzle-piece-container .puzzle-piece {
+    font-size: 45px;
+  }
+}
+
+@media (max-width: 600px) {
+  .puzzle-container-content .puzzle-5 .puzzle-piece-container .puzzle-piece {
+    border: 3px solid #DCA352;
+  }
+}
+
+@media (max-width: 475px) {
+  .puzzle-container-content .puzzle-5 .puzzle-piece-container .puzzle-piece {
+    font-size: 30px;
+  }
+}
+
 .puzzle-container-content .puzzle-6 .puzzle-piece-container {
   height: 16.66666667%;
   width: 16.66666667%;
@@ -184,6 +275,19 @@ body {
 
 .puzzle-container-content .puzzle-6 .puzzle-piece-container .puzzle-piece {
   font-size: 45px;
+}
+
+@media (max-width: 600px) {
+  .puzzle-container-content .puzzle-6 .puzzle-piece-container .puzzle-piece {
+    font-size: 35px;
+  }
+}
+
+@media (max-width: 475px) {
+  .puzzle-container-content .puzzle-6 .puzzle-piece-container .puzzle-piece {
+    font-size: 25px;
+    border: 3px solid #DCA352;
+  }
 }
 
 .puzzle-container-content .active-game-menu {
@@ -248,7 +352,7 @@ body {
   border: none;
   color: white;
   font-size: 18px;
-  width: 95px;
+  width: 92px;
   height: 29px;
   cursor: pointer;
   border-radius: 50px;

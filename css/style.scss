@@ -34,6 +34,9 @@ body {
                 span {
                     color: white;    
                     font-size: 19px;
+                    @media (max-width: 600px) {
+                        font-size: 16px;
+                    }
                 }
             }
             &-second {
@@ -48,6 +51,13 @@ body {
                     height: 29px;
                     cursor: pointer;
                     border-radius: 50px;
+                    background-size: cover;
+                    @media (max-width: 700px) {
+                        width: 71px;
+                        height: 26px;
+                        font-size: 16px;
+                        margin-top: 10px;
+                    }
                 }
                 .choose-again {
                     width: 190px;
@@ -56,8 +66,33 @@ body {
                     background-size: cover;
                     height: 34px;
                     font-size: 16px;
+                    @media (max-width: 700px) {
+                        margin-top: 10px;
+                        width: 145px;
+                        height: 30px;
+                        font-size: 16px;
+                    }
                 }
             }
+            @media (max-width: 700px) {
+                width: 514px;
+                height: 86px;
+            }
+            @media (max-width: 600px) {
+                // width: 414px;
+                background: url('../img/background-date-mobile.png');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: bottom;
+                width: 100%;
+            }
+        }
+        @media (max-width: 700px) {
+            margin: 10px 0px 20px 0px;
+        }
+        @media (max-width: 600px) {
+            margin-top: 0;
+            width: 100%;
         }
     }
     &-content {
@@ -104,6 +139,9 @@ body {
                 width: 33.333333%;
                 .puzzle-piece {
                     font-size: 80px;
+                    @media (max-width: 550px) {
+                        font-size: 50px;
+                    }
                 }
             }
         }
@@ -113,6 +151,12 @@ body {
                 width: 25%;
                 .puzzle-piece {
                     font-size: 75px;
+                    @media (max-width: 600px) {
+                        font-size: 55px;
+                    }
+                    @media (max-width: 475px) {
+                        font-size: 40px;
+                    }
                 }
             }
         }
@@ -123,7 +167,17 @@ body {
                 font-size: 60px;
                 .puzzle-piece {
                     font-size: 60px;
+                    @media (max-width: 700px) {
+                        font-size: 45px;
+                    }
+                    @media (max-width: 600px) {
+                        border: 3px solid #DCA352;
+                    }
+                    @media (max-width: 475px) {
+                        font-size: 30px;
+                    }
                 }
+
             }
         }
         .puzzle-6 {
@@ -132,6 +186,13 @@ body {
                 width: 16.66666667%;
                 .puzzle-piece {
                     font-size: 45px;
+                    @media (max-width: 600px) {
+                        font-size: 35px;
+                    }
+                    @media (max-width: 475px) {
+                        font-size: 25px;
+                        border: 3px solid #DCA352;
+                    }
                 }
             }
         }
@@ -167,7 +228,7 @@ body {
                         border: none;
                         color: white;
                         font-size: 18px;
-                        width: 95px;
+                        width: 92px;
                         height: 29px;
                         cursor: pointer;
                         border-radius: 50px;
