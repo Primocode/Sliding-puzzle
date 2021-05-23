@@ -295,6 +295,18 @@ body {
                     }
                 }
             }
+            @media (max-width: 700px) {
+                height: 500px;
+                width: 500px;
+            }
+            @media (max-width: 600px) {
+                height: 400px;
+                width: 400px;
+            }
+            @media (max-width: 475px) {
+                height: 300px;
+                width: 300px;
+            }
         }
         @media (max-width: 700px) {
             height: 500px;
