@@ -16,13 +16,33 @@ const values = {
 const validation = () => {
     const inTheElement = document.querySelectorAll('.puzzle-piece');
     inTheElement.forEach(item => {
-        if (item.dataset.value === item.dataset.inWhichElement) item.classList.add("puzzle-piece-correct"); 
+        const { value, inWhichElement } = item.dataset
+        if (value === inWhichElement) item.classList.add("puzzle-piece-correct"); 
     })
 }
 
+const checkYouWon = () => {
+    const elements = document.querySelectorAll('.puzzle-piece-correct')
+
+    if (elements.length ===  ((values.col * values.col) - 1)) {
+        stopCountTheTime();
+        document.querySelector('#win-popup').className = "win-popup";
+        const resultText = document.querySelector('#win-text');
+        resultText.innerHTML = `Potrzebowałeś <b>${values.seconds} sekund</b> i <b>${values.numberOfChanges} przesunięć</b> by ułożyć puzzle`
+    }
+}
+
+const returnToTheMenuAfterWinning = () => {
+    console.log("wygrana");
+    document.querySelector('#win-popup').className = "win-popup-unactive"
+    backToTheMenu();
+}
+
+document.querySelector('#back-to-the-menu').addEventListener('click', returnToTheMenuAfterWinning)
+
 const givePossibilityToMove = () => document.querySelectorAll('.puzzle-piece').forEach(item => item.addEventListener('click', movingElements));
 
-const generatingElements = (quantity) => {
+const generatingElements = quantity => {
     const spaceForAPuzzle = document.querySelector('#puzzle-container');
 
     document.querySelectorAll('.puzzle-piece-container').forEach(item => item.remove());
@@ -49,18 +69,19 @@ const generatingElements = (quantity) => {
     for (let i = 0; i < (values.col * 10); i++) {
         translatingPuzzles();
     }
-    
+    checkYouWon();
 }
 
 const translatingPuzzles = () => {
     let grow = true;
     while (grow) {
         const puzzleToMoveId = document.querySelector(`.puzzle-piece[data-in-which-element="${capabilities[Math.floor((Math.random() * (capabilities.length))).toFixed(0)]}"]`);
-        if (lastElementDrawn != puzzleToMoveId.dataset.value) {
+        const { value, inWhichElement } = puzzleToMoveId.dataset
+        if (lastElementDrawn != value) {
             grow = false;
             emptyElement();
-            generatingASingleElement(emptyElementId, puzzleToMoveId.dataset.value, puzzleToMoveId.dataset.inWhichElement, true);
-            lastElementDrawn = puzzleToMoveId.dataset.value;
+            generatingASingleElement(emptyElementId, value, inWhichElement, true);
+            lastElementDrawn = value;
         }
     }
 }
@@ -77,14 +98,14 @@ const generatingASingleElement = (id, value, inWhatElement, translating) => {
         element.textContent = value;
         element.dataset.value = value;
         toTheItem.appendChild(element);
-    
         givePossibilityToMove();
         validation();
         puzzleAvaiableForTransfer();
+        checkYouWon();
     }
 
     if (translating) {
-        document.querySelector(`[data-in-which-element="${inWhatElement}"`).remove();
+        removeAfterSeconds();
         generating();
     }
     else {
@@ -93,15 +114,16 @@ const generatingASingleElement = (id, value, inWhatElement, translating) => {
     }
 }
 
-const movingElements = (e) => {
+const movingElements = e => {
+    const { inWhichElement, value } = e.target.dataset
     if (isMovingElement === false) {
         isMovingElement = true;
         setTimeout(() => { isMovingElement = false}, 160);
         emptyElement();
         availablePuzzleForMove(values.col, Number(emptyElementId));
-        if(capabilities.includes(Number(e.target.dataset.inWhichElement))) {
-            slidingEffect(e.target.dataset.inWhichElement, capabilities, puzzlePosition);
-            generatingASingleElement(emptyElementId, e.currentTarget.dataset.value, e.target.dataset.inWhichElement, null);
+        if (capabilities.includes(Number(inWhichElement))) {
+            slidingEffect(inWhichElement, capabilities, puzzlePosition);
+            generatingASingleElement(emptyElementId, value, inWhichElement, null);
             nextMove();
         }
     }
@@ -109,12 +131,11 @@ const movingElements = (e) => {
 
 const nextMove = () => document.querySelector('#number-of-shifts').textContent = ++values.numberOfChanges;
 
-const modeSelection = (e) => {
+const modeSelection = e => {
     document.querySelectorAll('.mode-selection').forEach(item => item.classList.remove('mode-selection-active'));
     e.currentTarget.classList.add('mode-selection-active');
     values.col = Number(e.target.dataset.col);
 }
-
 document.querySelectorAll('.mode-selection').forEach(item => item.addEventListener('click', modeSelection));
 
 const countTheTime = () => counting = setInterval(displayCurrentTime, 1000);
@@ -128,7 +149,7 @@ const resetCountTheTime = () => {
     displayCurrentTime(true);
 }
 
-const displayCurrentTime = (resetCounter) => {
+const displayCurrentTime = resetCounter => {
     const counter = document.querySelector('#time');
     values.seconds = ++values.seconds;
     counter.textContent = values.seconds + "s";
@@ -139,12 +160,12 @@ const startTheGame = () => {
     if (values.col === null) errorMessage("Musisz wybrać wielkość planszy by zacząć grać");
      
     else {
-        document.querySelector('#puzzle-container').classList.add("puzzle-" + values.col);
+        document.querySelector('#puzzle-container').classList.add(`puzzle-${values.col}`);
         generatingElements(values.col * values.col);
         countTheTime();
         menuOff();
     }
-}
+}  
 document.querySelector('#start-the-game').addEventListener('click', startTheGame);
 
 const menuOn = () => {
@@ -159,9 +180,13 @@ const menuOff = () => {
 
 const pauseOn = () => {
     if (values.menu === false) {
-        document.querySelector('#pause-game').classList.add('pause-game-active');
-        stopCountTheTime();
-        values.pause = true;
+        if (values.pause === false) {
+            document.querySelector('#pause-game').classList.add('pause-game-active');
+            stopCountTheTime();
+            values.pause = true;
+        }
+        else errorMessage("Pauza jest już włączona");
+
     }
     else errorMessage("Nie możesz włączyć pauzy w menu");
 }
@@ -203,7 +228,6 @@ const backToTheMenu = () => {
         stopCountTheTime();
         menuOn();
         resettingMoves();
-        
     }
     else errorMessage("Musisz wyłączyć pauze by włączyć menu");
 }
@@ -241,6 +265,7 @@ const availablePuzzleForMove = (col, idEmpty) => {
         puzzlePosition.push("top");
         capabilities.push(idEmpty + col);
         puzzlePosition.push("bottom");
+
         if (puzzleRight.includes(idEmpty)) {
             capabilities.push(idEmpty + 1)
             puzzlePosition.push("right");
@@ -262,7 +287,6 @@ const availablePuzzleForMove = (col, idEmpty) => {
     if ((idEmpty > 1 && idEmpty < col) || (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity)) {
         capabilities.push(idEmpty + 1);
         puzzlePosition.push("right");
-
         capabilities.push(idEmpty - 1);
         puzzlePosition.push("left");
 
@@ -295,6 +319,7 @@ const availablePuzzleForMove = (col, idEmpty) => {
     if ((idEmpty === (puzzleQuantity - (col - 1 ))) || (puzzleQuantity === idEmpty)) {
         capabilities.push(idEmpty - col);
         puzzlePosition.push("top");
+
         if (idEmpty === (puzzleQuantity - (col - 1 ))) {
             capabilities.push(idEmpty + 1 );  
             puzzlePosition.push("right");
@@ -307,7 +332,7 @@ const availablePuzzleForMove = (col, idEmpty) => {
     }
 }
 
-window.addEventListener('keydown', (e) => {
+window.addEventListener('keydown', e => {
     if (values.pause === false ){
         if (isMovingElement === false) {
             isMovingElement = true;
@@ -333,16 +358,17 @@ window.addEventListener('keydown', (e) => {
     }
 }, false);
 
-const arrowControl = (position) => {
+const arrowControl = position => {
     if (puzzlePosition.includes(position)) {
         emptyElement();
         
         const indexElement = puzzlePosition.indexOf(position);
-
         const element = document.querySelector(`[data-in-which-element="${capabilities[indexElement]}"`);
+        
+        const { inWhichElement, value } = element.dataset
 
-        slidingEffect(element.dataset.inWhichElement, capabilities, puzzlePosition);
-        generatingASingleElement(emptyElementId, element.dataset.value, element.dataset.inWhichElement, null);
+        slidingEffect(inWhichElement, capabilities, puzzlePosition);
+        generatingASingleElement(emptyElementId, value, inWhichElement, null);
         nextMove();
     }
 }
@@ -375,18 +401,17 @@ const slidingEffect = (puzzelId, capabilities, positions) => {
 const emptyElement = () => {
     const allComponents = document.querySelectorAll('.puzzle-piece-container');
     allComponents.forEach(element => {
-        if (!document.querySelector(`.puzzle-piece[data-in-which-element="${element.dataset.id}"]`)) {
-            emptyElementId = element.dataset.id;
+        const { id } = element.dataset
+        if (!document.querySelector(`.puzzle-piece[data-in-which-element="${id}"]`)) {
+            emptyElementId = id;
         }
     })
 }
 
-const errorMessage = (mess) => {
+const errorMessage = mess => {
     const messageElement = document.createElement('div');
     messageElement.className = "message";
     document.querySelector('body').before(messageElement);
     messageElement.textContent = mess;
-    setTimeout(() => {
-        messageElement.remove();
-    }, 2500);
+    setTimeout(() => {messageElement.remove()}, 2500)
 }
