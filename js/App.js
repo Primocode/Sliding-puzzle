@@ -1,21 +1,8 @@
-let capabilities = [];
-let puzzlePosition = [];
 let positionsAndOpportunities = [];
 let isMovingElement = false;
 let emptyElementId;
 let lastElementDrawn;
 let counting;
-
-// positionsAndOpportunities.push(
-//     {capabilities: 2, position: "top"},
-//     {capabilities: 8, position: "bottom"},
-//     {capabilities: 4, position: "left"},
-//     {capabilities: 6, position: "right"},
-// )
-
-// positionsAndOpportunities.forEach(item => {
-//     console.log(item.capabilities);
-// })
 
 const values = {
     numberOfChanges: 0,
@@ -74,19 +61,22 @@ const generatingElements = quantity => {
         element.dataset.inWhichElement = mainElement[i].dataset.id;
         mainElement[i].appendChild(element);
     }
-    
     givePossibilityToMove();
     puzzleAvaiableForTransfer();
     for (let i = 0; i < (values.col * 10); i++) {
         translatingPuzzles();
     }
-    checkYouWon();
+    // checkYouWon();
 }
 
 const translatingPuzzles = () => {
     let grow = true;
+    let allNumbers = [];
+    positionsAndOpportunities.forEach(item => {
+        allNumbers.push(item.capabilities)
+    })
     while (grow) {
-        const puzzleToMoveId = document.querySelector(`.puzzle-piece[data-in-which-element="${capabilities[Math.floor((Math.random() * (capabilities.length))).toFixed(0)]}"]`);
+        const puzzleToMoveId = document.querySelector(`.puzzle-piece[data-in-which-element="${allNumbers[Math.floor((Math.random() * (allNumbers.length))).toFixed(0)]}"]`);
         const { value, inWhichElement } = puzzleToMoveId.dataset;
         if (lastElementDrawn != value) {
             grow = false;
@@ -132,11 +122,14 @@ const movingElements = e => {
         setTimeout(() => { isMovingElement = false}, 160);
         emptyElement();
         availablePuzzleForMove(values.col, Number(emptyElementId));
-        if (capabilities.includes(Number(inWhichElement))) {
-            slidingEffect(inWhichElement, capabilities, puzzlePosition);
-            generatingASingleElement(emptyElementId, value, inWhichElement, null);
-            nextMove();
-        }
+
+        positionsAndOpportunities.forEach(item => {
+            if ([item.capabilities].includes(Number(inWhichElement))) {
+                slidingEffect(inWhichElement, item.position);
+                generatingASingleElement(emptyElementId, value, inWhichElement, null);
+                nextMove();
+            }
+        })
     }
 }
 
@@ -203,10 +196,10 @@ const pauseOn = () => {
 document.querySelector('#pauza').addEventListener('click', pauseOn);
 
 const pauseOff = () => {
+    console.log("wylacz pauze")
     document.querySelector('#pause-game').classList.remove('pause-game-active');
     countTheTime();
     values.pause = false;
-    values.menu = false;
 }
 document.querySelector('#pause-game-off').addEventListener('click', pauseOff);
 
@@ -249,14 +242,13 @@ const puzzleAvaiableForTransfer = () => {
     emptyElement();
     availablePuzzleForMove(values.col, Number(emptyElementId));
 
-    capabilities.forEach(id => {
-        document.querySelector(`.puzzle-piece[data-in-which-element="${id}"]`).classList.add('puzzle-active-for-move');
+    positionsAndOpportunities.forEach(value => {
+        document.querySelector(`.puzzle-piece[data-in-which-element="${value.capabilities}"]`).classList.add('puzzle-active-for-move');
     })
 }
 
 const availablePuzzleForMove = (col, idEmpty) => {
-    capabilities = [];
-    puzzlePosition = [];
+    positionsAndOpportunities = [];
     const puzzleQuantity = col * col
 
     const puzzleLeft = [];
@@ -271,80 +263,64 @@ const availablePuzzleForMove = (col, idEmpty) => {
     }
 
     if ((puzzleRight.includes(idEmpty)) || (puzzleLeft.includes(idEmpty)) || (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty )) {
-        capabilities.push(idEmpty - col);
-        puzzlePosition.push("top");
-        capabilities.push(idEmpty + col);
-        puzzlePosition.push("bottom");
+        positionsAndOpportunities.push({ position: "top", capabilities: idEmpty - col});
+        positionsAndOpportunities.push({ position: "bottom", capabilities: idEmpty + col});
 
         if (puzzleRight.includes(idEmpty)) {
-            capabilities.push(idEmpty + 1)
-            puzzlePosition.push("right");
+            positionsAndOpportunities.push({ position: "right", capabilities: idEmpty + 1});
         }
 
         if (puzzleLeft.includes(idEmpty)) {
-            capabilities.push(idEmpty - 1);
-            puzzlePosition.push("left");
+            positionsAndOpportunities.push({ position: "left", capabilities: idEmpty - 1});
         }
 
         if (idEmpty > col && idEmpty < (puzzleQuantity - col) && idEmpty && !puzzleLeft.includes(idEmpty) && !puzzleRight.includes(idEmpty)) {
-            capabilities.push(idEmpty - 1);
-            puzzlePosition.push("left");
-            capabilities.push(idEmpty + 1);
-            puzzlePosition.push("right");
+            positionsAndOpportunities.push({ position: "left", capabilities: idEmpty - 1});
+            positionsAndOpportunities.push({ position: "right", capabilities: idEmpty + 1});
         }
     }
 
     if ((idEmpty > 1 && idEmpty < col) || (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity)) {
-        capabilities.push(idEmpty + 1);
-        puzzlePosition.push("right");
-        capabilities.push(idEmpty - 1);
-        puzzlePosition.push("left");
+        positionsAndOpportunities.push({ position: "right", capabilities: idEmpty + 1});
+        positionsAndOpportunities.push({ position: "left", capabilities: idEmpty - 1});
 
         if (idEmpty > (puzzleQuantity - (col - 1)) && idEmpty < puzzleQuantity) {
-            capabilities.push(idEmpty - col);
-            puzzlePosition.push("top");
+            positionsAndOpportunities.push({ position: "top", capabilities: idEmpty - col});
         }
         
         if (idEmpty > 1 && idEmpty < col) {
-            capabilities.push(idEmpty + col);
-            puzzlePosition.push("bottom");
+            positionsAndOpportunities.push({ position: "bottom", capabilities: idEmpty + col});
         };
     }
 
     if ((idEmpty === 1) || (idEmpty === col)) {
-        capabilities.push(idEmpty + col);
-        puzzlePosition.push("bottom");
+        positionsAndOpportunities.push({ position: "bottom", capabilities: idEmpty + col});
 
         if (idEmpty === 1) {
-            capabilities.push(idEmpty + 1 );
-            puzzlePosition.push("right");
+            positionsAndOpportunities.push({ position: "right", capabilities: idEmpty + 1});
         }
 
         if (idEmpty === col) {
-            capabilities.push(idEmpty - 1 );
-            puzzlePosition.push("left");
+            positionsAndOpportunities.push({ position: "left", capabilities: idEmpty - 1});
         }
     }
 
     if ((idEmpty === (puzzleQuantity - (col - 1 ))) || (puzzleQuantity === idEmpty)) {
-        capabilities.push(idEmpty - col);
-        puzzlePosition.push("top");
+        positionsAndOpportunities.push({ position: "top", capabilities: idEmpty - col});
 
         if (idEmpty === (puzzleQuantity - (col - 1 ))) {
-            capabilities.push(idEmpty + 1 );  
-            puzzlePosition.push("right");
+            positionsAndOpportunities.push({ position: "right", capabilities: idEmpty + 1});
         }
         
         if (puzzleQuantity === idEmpty) {
-            capabilities.push(idEmpty - 1);
-            puzzlePosition.push("left");
+            positionsAndOpportunities.push({ position: "left", capabilities: idEmpty - 1});
         }
     }
 }
 
 window.addEventListener('keydown', e => {
-    if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) {
-        if (values.pause === false ){
+    if (values.pause === false ) {
+        if (e.keyCode === 37  || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) {
             if (isMovingElement === false) {
                 isMovingElement = true;
                 setTimeout(() => { isMovingElement = false}, 160);
@@ -368,31 +344,27 @@ window.addEventListener('keydown', e => {
             }
         }
     }
-
 }, false);
 
 const arrowControl = position => {
-    if (puzzlePosition.includes(position)) {
-        emptyElement();
-        
-        const indexElement = puzzlePosition.indexOf(position);
-        const element = document.querySelector(`[data-in-which-element="${capabilities[indexElement]}"`);
-        
+    if (positionsAndOpportunities.find(element => element.position === position )) {
+        const indexElement = positionsAndOpportunities.findIndex(element => element.position === position )
+
+        const element = document.querySelector(`[data-in-which-element="${positionsAndOpportunities[indexElement].capabilities}"`); 
         const { inWhichElement, value } = element.dataset
 
-        slidingEffect(inWhichElement, capabilities, puzzlePosition);
+        slidingEffect(inWhichElement, positionsAndOpportunities[indexElement].position);
         generatingASingleElement(emptyElementId, value, inWhichElement, null);
         nextMove();
-    }
+    } 
 }
 
-const slidingEffect = (puzzelId, capabilities, positions) => {
+const slidingEffect = (puzzelId, positions) => {
     const sizeItem = document.querySelector(`.puzzle-piece-container`);
     const size = getComputedStyle(sizeItem).height;
-    const position = positions[capabilities.indexOf(Number(puzzelId))];
     const elementToBeMoved = document.querySelector(`.puzzle-piece[data-in-which-element="${puzzelId}"]`);
 
-    switch (position) {
+    switch (positions) {
         case "top":
             elementToBeMoved.style.transform = `translate(0px, ${size})`;
         break;
