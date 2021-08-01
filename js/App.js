@@ -1,9 +1,21 @@
 let capabilities = [];
 let puzzlePosition = [];
+let positionsAndOpportunities = [];
 let isMovingElement = false;
 let emptyElementId;
 let lastElementDrawn;
 let counting;
+
+// positionsAndOpportunities.push(
+//     {capabilities: 2, position: "top"},
+//     {capabilities: 8, position: "bottom"},
+//     {capabilities: 4, position: "left"},
+//     {capabilities: 6, position: "right"},
+// )
+
+// positionsAndOpportunities.forEach(item => {
+//     console.log(item.capabilities);
+// })
 
 const values = {
     numberOfChanges: 0,
@@ -16,29 +28,28 @@ const values = {
 const validation = () => {
     const inTheElement = document.querySelectorAll('.puzzle-piece');
     inTheElement.forEach(item => {
-        const { value, inWhichElement } = item.dataset
+        const { value, inWhichElement } = item.dataset;
         if (value === inWhichElement) item.classList.add("puzzle-piece-correct"); 
     })
 }
 
 const checkYouWon = () => {
-    const elements = document.querySelectorAll('.puzzle-piece-correct')
+    const elements = document.querySelectorAll('.puzzle-piece-correct');
 
     if (elements.length ===  ((values.col * values.col) - 1)) {
         stopCountTheTime();
         document.querySelector('#win-popup').className = "win-popup";
         const resultText = document.querySelector('#win-text');
-        resultText.innerHTML = `Potrzebowałeś <b>${values.seconds} sekund</b> i <b>${values.numberOfChanges} przesunięć</b> by ułożyć puzzle`
+        resultText.innerHTML = `Potrzebowałeś <b>${values.seconds} sekund</b> i <b>${values.numberOfChanges} przesunięć</b> by ułożyć puzzle`;
     }
 }
 
 const returnToTheMenuAfterWinning = () => {
-    console.log("wygrana");
-    document.querySelector('#win-popup').className = "win-popup-unactive"
+    document.querySelector('#win-popup').className = "win-popup-unactive";
     backToTheMenu();
 }
 
-document.querySelector('#back-to-the-menu').addEventListener('click', returnToTheMenuAfterWinning)
+document.querySelector('#back-to-the-menu').addEventListener('click', returnToTheMenuAfterWinning);
 
 const givePossibilityToMove = () => document.querySelectorAll('.puzzle-piece').forEach(item => item.addEventListener('click', movingElements));
 
@@ -76,7 +87,7 @@ const translatingPuzzles = () => {
     let grow = true;
     while (grow) {
         const puzzleToMoveId = document.querySelector(`.puzzle-piece[data-in-which-element="${capabilities[Math.floor((Math.random() * (capabilities.length))).toFixed(0)]}"]`);
-        const { value, inWhichElement } = puzzleToMoveId.dataset
+        const { value, inWhichElement } = puzzleToMoveId.dataset;
         if (lastElementDrawn != value) {
             grow = false;
             emptyElement();
@@ -115,7 +126,7 @@ const generatingASingleElement = (id, value, inWhatElement, translating) => {
 }
 
 const movingElements = e => {
-    const { inWhichElement, value } = e.target.dataset
+    const { inWhichElement, value } = e.target.dataset;
     if (isMovingElement === false) {
         isMovingElement = true;
         setTimeout(() => { isMovingElement = false}, 160);
@@ -186,7 +197,6 @@ const pauseOn = () => {
             values.pause = true;
         }
         else errorMessage("Pauza jest już włączona");
-
     }
     else errorMessage("Nie możesz włączyć pauzy w menu");
 }
@@ -333,29 +343,32 @@ const availablePuzzleForMove = (col, idEmpty) => {
 }
 
 window.addEventListener('keydown', e => {
-    if (values.pause === false ){
-        if (isMovingElement === false) {
-            isMovingElement = true;
-            setTimeout(() => { isMovingElement = false}, 160);
-            switch (e.keyCode) {
-                case 37: 
-                    arrowControl("left");
-                break;
-
-                case 38: 
-                    arrowControl("top");
-                break;
-
-                case 39: 
-                    arrowControl("right");
-                break;
-
-                case 40:
-                    arrowControl("bottom");
-                break;
+    if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) {
+        if (values.pause === false ){
+            if (isMovingElement === false) {
+                isMovingElement = true;
+                setTimeout(() => { isMovingElement = false}, 160);
+                switch (e.keyCode) {
+                    case 37: 
+                        arrowControl("left");
+                    break;
+    
+                    case 38: 
+                        arrowControl("top");
+                    break;
+    
+                    case 39: 
+                        arrowControl("right");
+                    break;
+    
+                    case 40:
+                        arrowControl("bottom");
+                    break;
+                }
             }
         }
     }
+
 }, false);
 
 const arrowControl = position => {
