@@ -66,15 +66,12 @@ const generatingElements = quantity => {
     for (let i = 0; i < (values.col * 10); i++) {
         translatingPuzzles();
     }
-    // checkYouWon();
 }
 
 const translatingPuzzles = () => {
     let grow = true;
     let allNumbers = [];
-    positionsAndOpportunities.forEach(item => {
-        allNumbers.push(item.capabilities)
-    })
+    positionsAndOpportunities.forEach(item => allNumbers.push(item.capabilities))
     while (grow) {
         const puzzleToMoveId = document.querySelector(`.puzzle-piece[data-in-which-element="${allNumbers[Math.floor((Math.random() * (allNumbers.length))).toFixed(0)]}"]`);
         const { value, inWhichElement } = puzzleToMoveId.dataset;
@@ -117,9 +114,9 @@ const generatingASingleElement = (id, value, inWhatElement, translating) => {
 
 const movingElements = e => {
     const { inWhichElement, value } = e.target.dataset;
-    if (isMovingElement === false) {
+    if (!isMovingElement) {
         isMovingElement = true;
-        setTimeout(() => { isMovingElement = false}, 160);
+        setTimeout(() => { isMovingElement = false }, 160);
         emptyElement();
         availablePuzzleForMove(values.col, Number(emptyElementId));
 
@@ -183,8 +180,8 @@ const menuOff = () => {
 }
 
 const pauseOn = () => {
-    if (values.menu === false) {
-        if (values.pause === false) {
+    if (!values.menu) {
+        if (!values.pause) {
             document.querySelector('#pause-game').classList.add('pause-game-active');
             stopCountTheTime();
             values.pause = true;
@@ -196,7 +193,6 @@ const pauseOn = () => {
 document.querySelector('#pauza').addEventListener('click', pauseOn);
 
 const pauseOff = () => {
-    console.log("wylacz pauze")
     document.querySelector('#pause-game').classList.remove('pause-game-active');
     countTheTime();
     values.pause = false;
@@ -209,8 +205,8 @@ const resettingMoves = () => {
 }
 
 const resetGame = () => {
-    if (values.menu === false) {
-        if (values.pause === false) {
+    if (!values.menu) {
+        if (!values.pause) {
             resetCountTheTime();
             generatingElements(values.col * values.col);
             resettingMoves();
@@ -222,7 +218,7 @@ const resetGame = () => {
 document.querySelector('#start').addEventListener('click', resetGame);
 
 const backToTheMenu = () => {
-    if (values.pause === false) {
+    if (!values.pause) {
         document.querySelectorAll('.mode-selection').forEach(item => item.classList.remove("mode-selection-active"));
         document.querySelector('.puzzle-container-content-container').classList.remove(`puzzle-${values.col}`);
         document.querySelectorAll('.puzzle-piece-container').forEach(item => item.remove());
@@ -319,9 +315,9 @@ const availablePuzzleForMove = (col, idEmpty) => {
 }
 
 window.addEventListener('keydown', e => {
-    if (values.pause === false ) {
+    if (!values.pause) {
         if (e.keyCode === 37  || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) {
-            if (isMovingElement === false) {
+            if (!isMovingElement) {
                 isMovingElement = true;
                 setTimeout(() => { isMovingElement = false}, 160);
                 switch (e.keyCode) {
@@ -387,9 +383,7 @@ const emptyElement = () => {
     const allComponents = document.querySelectorAll('.puzzle-piece-container');
     allComponents.forEach(element => {
         const { id } = element.dataset
-        if (!document.querySelector(`.puzzle-piece[data-in-which-element="${id}"]`)) {
-            emptyElementId = id;
-        }
+        if (!document.querySelector(`.puzzle-piece[data-in-which-element="${id}"]`)) emptyElementId = id;
     })
 }
 
